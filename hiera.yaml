@@ -1,0 +1,12 @@
+---
+:backends:
+  - yaml
+
+:yaml:
+  :datadir: hiera
+
+:hierarchy:
+  - "%{hostname}"
+  - common
+
+:merge_behavior: deeper
