@@ -1,0 +1,12 @@
+FORGE
+  remote: https://forgeapi.puppetlabs.com
+  specs:
+    puppetlabs-apt (2.1.1)
+      puppetlabs-stdlib (< 5.0.0, >= 4.5.0)
+    puppetlabs-stdlib (4.9.0)
+    thias-samba (0.1.5)
+
+DEPENDENCIES
+  puppetlabs-apt (>= 0)
+  thias-samba (>= 0)
+

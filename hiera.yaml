@@ -6,7 +6,5 @@
   :datadir: hiera
 
 :hierarchy:
-  - "%{hostname}"
+  - "%{::hostname}"
   - common
-
-:merge_behavior: deeper

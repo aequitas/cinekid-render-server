@@ -1,0 +1,16 @@
+# server with samba share, coordinates encoding, does uploading
+
+classes:
+  - samba::server
+
+samba::server::security: user
+samba::server::map_to_guest: Bad Password
+samba::server::guest_account: nobody
+
+samba::server::shares:
+  Cinekid:
+    - writable = yes
+    - path = /srv/cinekid/samba/
+    - guest ok = yes
+    - browsable = yes
+    - read only = no

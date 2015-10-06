@@ -1,0 +1,23 @@
+# internal user
+cinekid::user: cinekid
+
+# user and ssh key for webserver sftp sync
+cinekid::web_user: cinekid
+cinekid::public_key: ***REMOVED***
+
+# message on the smb server
+samba::server::server_string: CineKid Encode Server
+
+# incoming folders to create
+cinekid::folders:
+  Test1: {}
+  Test2: {}
+
+# --- below this line, do not touch unless you have to ---
+
+classes:
+  - cinekid
+  - apt
+
+apt::update::frequency: weekly
+

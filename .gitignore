@@ -1,3 +1,4 @@
-vendor/modules/*
 .vagrant
 *.swp
+.tmp/
+modules/
