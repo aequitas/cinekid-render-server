@@ -6,8 +6,9 @@ cinekid::works:
   - VR Stereobril
   - VR Metropolis
   - VideoMapping
-  - Quirkbot – Touchboard
+  - Quirkbot - Touchboard
   - EBOTRACK
+  - Test
 
 # range of day that need to be created in works folders
 cinekid::day_start: 10

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 #^syntax detection
 
-forge "https://forge.puppetlabs.com"
+forge "https://forgeapi.puppetlabs.com"
 
 # use dependencies defined in Modulefile
 # modulefile
