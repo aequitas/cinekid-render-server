@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 # settings
 base_dir = '/srv/cinekid'
 render_re = re.compile('sleep 10')
-video_ext = re.compile('.*(mp4|mov)$')
+video_ext = re.compile('[^\.].*(mp4|mov)$')
 
 render_cmd = '/usr/local/bin/cinekid_render.sh'
 
