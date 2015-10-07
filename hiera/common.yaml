@@ -1,3 +1,5 @@
+# --- below this line, settings which can be modified ---
+
 # works folders that need to be created
 cinekid::works:
   - Sjef de Superchef
@@ -53,7 +55,7 @@ cinekid::public_key: ***REMOVED***
 # message on the smb server
 samba::server::server_string: CineKid Encode Server
 
-# --- below this line, do not touch unless you have to ---
+# --- below this line, do not touch ! ---
 
 # internal user
 cinekid::user: cinekid
