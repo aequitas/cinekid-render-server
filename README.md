@@ -26,3 +26,13 @@ To reapply changes after the repository has been updated run these commands:
 - Puppet is used to bring the system to required state (install packages, make required directories, install commands and add daemons)
 - A user `cinekid` will be created and used for all actions, make sure you act as user `cinekid` when manually modifying files/directories: `sudo -u cinekid`
 
+# Debugging
+
+Watching output of processing pipeline:
+
+    sudo tail -f /var/log/upstart/cinekid_processing_pipeline.log
+
+Logfile of individual renders can be found in:
+
+    /srv/cinekid/logs/
+
