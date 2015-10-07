@@ -17,7 +17,7 @@ base_dir = '/srv/cinekid'
 render_re = re.compile('sleep 10')
 video_ext = re.compile('.*(mp4|mov)$')
 
-render_cmd = '/vagrant/src/render.sh'
+render_cmd = '/usr/local/bin/cinekid_render.sh'
 
 # internal variables
 samba_dir = 'samba'
@@ -94,11 +94,13 @@ def main():
     len(render_files), 'rendering:', len(rendering_files), 'done:', len(done_files))
 
     to_process = render_files[:available_slots]
+    if to_process:
+        print('going to start render of: ', to_process)
 
-    print('going to start render of: ', to_process)
-
-    pids = [p for p in map(start_render, to_process)]
-    print('started render processes with pids:', pids)
+        pids = [p for p in map(start_render, to_process)]
+        print('started render processes with pids:', pids)
+    else:
+        print('nothing to do')
 
     clean_render_files(rendering_files)
 
@@ -106,3 +108,4 @@ if __name__ == "__main__":
     os.chdir(base_dir)
     logging.basicConfig(level=logging.INFO)
     main()
+    print('---------------------------\n')
