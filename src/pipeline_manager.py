@@ -15,8 +15,9 @@ log = logging.getLogger(__name__)
 # settings
 base_dir = '/srv/cinekid'
 render_re = re.compile('sleep 10')
+video_ext = re.compile('.*(mp4|mov)$')
 
-render_cmd = '/vagrant/src/render.sh {base} {in_file} {tmp_file} {done_file}&'
+render_cmd = '/vagrant/src/render.sh'
 
 # internal variables
 samba_dir = 'samba'
@@ -34,23 +35,28 @@ def find(path):
     >>> find('samba_dir')
     ['10/file1.mpg', '11/file2.mpg']
     """
-    return [os.path.join(dp, f).replace(path+'/', '') for dp, dn, fn in os.walk(path) for f in fn]
+    return [os.path.join(dp, f).replace(path+'/', '')
+        for dp, dn, fn in os.walk(path)
+            for f in fn if video_ext.match(f)]
 
 def start_render(file):
     """Start background render process for file."""
-    files = {
-        'base': base_dir,
-        'in_file': os.path.join(samba_dir, file),
-        'tmp_file': os.path.join(tmp_dir, file),
-        'done_file': os.path.join(done_dir, file),
-    }
-    cmd = render_cmd.format(**files)
-    print('starting render command: ', cmd)
-    process = subprocess.Popen(cmd, shell=True)
+    lock_file = os.path.join(render_locks, file)
 
-    with open(os.path.join(render_locks, file), 'w') as f:
+    args = [
+        base_dir,
+        lock_file,
+        os.path.join(samba_dir, file),
+        os.path.join(tmp_dir, file),
+        os.path.join(done_dir, file),
+    ]
+
+    print('starting render command: ', render_cmd, " ".join(args))
+    process = subprocess.Popen([render_cmd] + args, preexec_fn=os.setpgrp)
+
+    with open(lock_file, 'w') as f:
         f.write(json.dumps({'pid': process.pid}))
-    return process
+    return process.pid
 
 def clean_render_files(lockfiles):
     """Remove lockfiles for processes that are no longer running."""
@@ -58,13 +64,15 @@ def clean_render_files(lockfiles):
         with open(os.path.join(render_locks, lockfile),'r') as f:
             try:
                 process = json.loads(f.read())
+                pid = str(process.get('pid'))
             except:
                 log.error('invalid lockfile %s, removing', lockfile)
                 os.remove(os.path.join(render_locks, lockfile))
+                continue
 
-        cmdfile = os.path.exists(os.path.join('/proc/', str(process.get('pid')), 'cmdline'))
+        cmdfile = os.path.exists(os.path.join('/proc/', pid, 'cmdline'))
         if not cmdfile:
-            log.info('process for lockfile %s no longer running, removing', lockfile)
+            log.info('process for lockfile %s, pid %s, no longer running, removing', lockfile, pid)
             os.remove(os.path.join(render_locks, lockfile))
 
 def main():
@@ -78,7 +86,9 @@ def main():
     available_slots = max(0, cores - len(rendering_files))
     print('render slots; total:', cores, 'available:', available_slots, 'running renders:', rendering_files)
 
-    render_files = list(set(ready_files) - set(done_files) - set(rendering_files))
+    # determine files which need rendering
+    render_files = [f for f in ready_files if not (
+        f in done_files or f in rendering_files)]
 
     print('file stats; samba:', len(samba_files), 'ready:', len(ready_files), 'need render:',
     len(render_files), 'rendering:', len(rendering_files), 'done:', len(done_files))
@@ -87,7 +97,7 @@ def main():
 
     print('going to start render of: ', to_process)
 
-    pids = [p.pid for p in map(start_render, to_process)]
+    pids = [p for p in map(start_render, to_process)]
     print('started render processes with pids:', pids)
 
     clean_render_files(rendering_files)

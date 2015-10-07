@@ -1,23 +1,78 @@
-# internal user
-cinekid::user: cinekid
+# works folders that need to be created
+cinekid::works:
+  - Sjef de Superchef
+  - Plastic Monstertjes
+  - FilmSpel.nl
+  - VR Stereobril
+  - VR Metropolis
+  - VideoMapping
+  - Quirkbot – Touchboard
+  - EBOTRACK
+
+# range of day that need to be created in works folders
+cinekid::day_start: 10
+cinekid::day_stop: 20
 
 # user and ssh key for webserver sftp sync
-cinekid::web_user: cinekid
+cinekid::web_user: ***REMOVED***
+cinekid::web_host: ***REMOVED***
+
+cinekid::private_key: |
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+
 cinekid::public_key: ***REMOVED***
 
 # message on the smb server
 samba::server::server_string: CineKid Encode Server
 
-# incoming folders to create
-cinekid::folders:
-  Test1: {}
-  Test2: {}
-
 # --- below this line, do not touch unless you have to ---
 
+# internal user
+cinekid::user: cinekid
+
+# include these classes
 classes:
   - cinekid
   - apt
+  - samba::server
 
 apt::update::frequency: weekly
 
+# settings for samba server
+samba::server::security: user
+samba::server::map_to_guest: Bad Password
+samba::server::guest_account: nobody
+
+samba::server::shares:
+  Cinekid:
+    - writable = yes
+    - path = /srv/cinekid/samba/
+    - guest ok = yes
+    - browsable = yes
+    - read only = no
