@@ -1,3 +1,5 @@
+SHELL=/bin/bash
+
 export GEM_HOME=.gem
 BIN=$(GEM_HOME)/bin
 
@@ -18,7 +20,7 @@ Puppetfile.lock: Puppetfile | $(librarian-puppet)
 # apply puppet configuration
 apply: Puppetfile.lock | $(puppet)
 	# apply configuration to AWS
-	$(puppet) apply --verbose \
+	sudo -E $(puppet) apply --verbose \
 	  --modulepath=modules:vendor/modules \
 	  --hiera_config=hiera.yaml \
 	  manifests/site.pp
@@ -35,16 +37,52 @@ Gemfile.lock: Gemfile | $(bundle)
 
 # install bundler Gemfile parser
 $(bundle):
-	$(gem) install --install-dir $(GEM_HOME) --bindir $(BIN) bundler
+	$(gem) install --bindir $(BIN) bundler
 
 # install ruby
 $(gem):
 	sudo apt-get install -yqq ruby
 
+# cleaning and maintenance
 
 mrproper:
-	rm -rf vendor/modules/* *.lock
+	rm -rf vendor/modules/* *.lock .gem .bundle
 
+empty_pipeline:
+	sudo find /srv/cinekid/{render_locks,done,logs,tmp}/ -type f -delete
+
+# status
+
+pipeline_files:
+	find /srv/cinekid -type f
+
+status:
+	sudo tail -f /var/log/upstart/cinekid_processing_pipeline.log
+
+# testing
+
+ts = $(shell date +%s)
+testfile = test 12341234 $(ts).mp4
 test:
+	# test guest login on samba
 	smbutil view -g //192.168.42.2 | grep Cinekid | grep Disk
+
+	# mount samba share
+	-umount /Volumes/Cinekid
+	mkdir -p /Volumes/Cinekid
+	mount_smbfs //guest@192.168.42.2/Cinekid /Volumes/Cinekid
+
+	# copy test video
+	cp "cinekid2015sourcevideos/test.mp4" "/Volumes/Cinekid/Test/10/$(testfile)"
+
+	# test if file is rendered
+	while sleep 5; do \
+		vagrant ssh encode-server-1 -- 'test -f "/srv/cinekid/done/Test/10/$(testfile)"' && break; \
+	done
+
+	# cleanup
+	umount /Volumes/Cinekid
+
 	@echo -- All good --
+
+
