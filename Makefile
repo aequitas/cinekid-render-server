@@ -19,7 +19,7 @@ Puppetfile.lock: Puppetfile | $(librarian-puppet)
 
 # apply puppet configuration
 apply: Puppetfile.lock | $(puppet)
-	# apply configuration to AWS
+	# apply configuration
 	sudo -E $(puppet) apply --verbose \
 	  --modulepath=modules:vendor/modules \
 	  --hiera_config=hiera.yaml \
@@ -33,7 +33,8 @@ $(puppet) $(librarian-puppet): Gemfile.lock
 
 # install ruby packages from Gemfile
 Gemfile.lock: Gemfile | $(bundle)
-	$(bundle) install --path $(GEM_HOME) --binstubs $(BIN)
+	$(bundle) install --quiet --path $(GEM_HOME) --binstubs $(BIN)
+	touch $@
 
 # install bundler Gemfile parser
 $(bundle):
@@ -57,7 +58,7 @@ pipeline_files:
 	find /srv/cinekid -type f
 
 status:
-	sudo tail -f /var/log/upstart/cinekid_processing_pipeline.log
+	sudo tail -f /var/log/upstart/cinekid_processing_pipeline.log /var/log/upstart/cinekid_rsync.log
 
 # testing
 

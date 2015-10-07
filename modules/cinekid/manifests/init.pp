@@ -1,15 +1,18 @@
 class cinekid (
   $user = undef,
   $web_user = undef,
+  $web_host = undef,
+  $web_target = undef,
   $private_key = undef,
   $public_key = undef,
   $share_root = '/srv/cinekid/samba',
+  $done_dir = '/srv/cinekid/done',
   $works = undef,
   $day_start=10,
   $day_stop=20,
 ){
   # install required packages
-  package { 'libav-tools':
+  package { ['libav-tools', 'rsync']:
   }
 
   # create required user and group
@@ -27,6 +30,10 @@ class cinekid (
   } ->
   file { "/home/${user}/.ssh":
     ensure => directory,
+  }
+
+  file { "/home/${user}/.ssh/config":
+    content => "StrictHostKeyChecking no"
   }
 
   # install private key for rsync
@@ -52,6 +59,14 @@ class cinekid (
     content => template('cinekid/cinekid_processing_pipeline.conf'),
   } ~>
   service { 'cinekid_processing_pipeline':
+    ensure => running,
+    enable => true,
+  }
+
+  file { "/etc/init/cinekid_rsync.conf":
+    content => template('cinekid/cinekid_rsync.conf'),
+  } ~>
+  service { 'cinekid_rsync':
     ensure => running,
     enable => true,
   }
