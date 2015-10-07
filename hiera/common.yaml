@@ -67,7 +67,7 @@ apt::update::frequency: weekly
 # settings for samba server
 samba::server::security: user
 samba::server::map_to_guest: Bad Password
-samba::server::guest_account: nobody
+samba::server::guest_account: cinekid
 
 samba::server::shares:
   Cinekid:
