@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 #^syntax detection
 
-forge "https://forgeapi.puppetlabs.com"
+forge "https://forge.puppetlabs.com"
 
 # use dependencies defined in Modulefile
 # modulefile
@@ -9,7 +9,7 @@ forge "https://forgeapi.puppetlabs.com"
 # A module from the Puppet Forge
 mod 'thias-samba'
 mod 'puppetlabs-apt'
-
+mod 'wilrnh-ffmpeg'
 # A module from git
 # mod 'puppetlabs-ntp',
 #   :git => 'git://github.com/puppetlabs/puppetlabs-ntp.git'

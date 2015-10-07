@@ -2,3 +2,7 @@
 *.swp
 .tmp/
 modules/
+.gem
+.bundle
+.rubydev
+*.lock
