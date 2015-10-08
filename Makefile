@@ -37,7 +37,7 @@ Gemfile.lock: Gemfile | $(bundle)
 	touch $@
 
 # install bundler Gemfile parser
-$(bundle):
+$(bundle): $(gem)
 	$(gem) install --bindir $(BIN) bundler
 
 # install ruby
