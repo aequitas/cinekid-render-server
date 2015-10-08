@@ -55,22 +55,22 @@ class cinekid (
     mode   => '0755',
   }
 
-  # only run rsync on primary server
-  $rsync_ensure = $primary ? { true => running, false => stopped }
   # create processing pipeline daemon script
   file { "/etc/init/cinekid_processing_pipeline.conf":
     content => template('cinekid/cinekid_processing_pipeline.conf'),
   } ~>
   service { 'cinekid_processing_pipeline':
-    ensure => $rsync_ensure,
+    ensure => running,
     enable => true,
   }
 
+  # only run rsync on primary server
+  $rsync_ensure = $primary ? { true => running, false => stopped }
   file { "/etc/init/cinekid_rsync.conf":
     content => template('cinekid/cinekid_rsync.conf'),
   } ~>
   service { 'cinekid_rsync':
-    ensure => running,
+    ensure => $rsync_ensure,
     enable => true,
   }
 
