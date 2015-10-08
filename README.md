@@ -42,6 +42,11 @@ After changing settings run puppet apply again:
 
     make apply
 
+Settings which are required are:
+
+    cinekid::nfs::primary_server
+    cinekid::nfs::secondary_server
+
 # Debugging
 
 Watching output of processing pipeline:
