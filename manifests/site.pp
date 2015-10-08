@@ -1,5 +1,3 @@
-hiera_include('classes', [])
-
 # webserver to test uploading
 node 'test-web-server' {
   user { $cinekid::web_user:
@@ -13,4 +11,11 @@ node 'test-web-server' {
   }
 }
 
-node default {}
+node default {
+    $primary_server = hiera('cinekid::nfs::primary_server')
+    $primary = ( $ipaddress_eth0 == $primary_server or
+        $ipaddress_eth1 == $primary_server)
+    notice("This is primary server: ${primary}")
+
+    hiera_include('classes', [])
+}

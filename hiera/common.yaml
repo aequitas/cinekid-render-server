@@ -1,5 +1,10 @@
 # --- below this line, settings which can be modified ---
 
+# ip addresses for primary and secondary server(s)
+cinekid::nfs::primary_server: 192.168.42.2
+cinekid::nfs::secondary_server:
+    - 192.168.42.3
+
 # works folders that need to be created
 cinekid::works:
   - Sjef de Superchef
@@ -65,6 +70,7 @@ classes:
   - cinekid
   - apt
   - samba::server
+  - cinekid::nfs
 
 apt::update::frequency: weekly
 

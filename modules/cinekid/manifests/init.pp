@@ -5,6 +5,7 @@ class cinekid (
   $web_target = undef,
   $private_key = undef,
   $public_key = undef,
+  $base_dir = '/srv/cinekid',
   $share_root = '/srv/cinekid/samba',
   $done_dir = '/srv/cinekid/done',
   $works = undef,
@@ -54,12 +55,14 @@ class cinekid (
     mode   => '0755',
   }
 
+  # only run rsync on primary server
+  $rsync_ensure = $primary ? { true => running, false => stopped }
   # create processing pipeline daemon script
   file { "/etc/init/cinekid_processing_pipeline.conf":
     content => template('cinekid/cinekid_processing_pipeline.conf'),
   } ~>
   service { 'cinekid_processing_pipeline':
-    ensure => running,
+    ensure => $rsync_ensure,
     enable => true,
   }
 
@@ -71,38 +74,43 @@ class cinekid (
     enable => true,
   }
 
-  # create base directories
-  $root = '/srv/cinekid/'
-  file { $root:
-    ensure => directory,
-  }
-  file { '/srv/cinekid/logs/':
-    ensure => directory,
-  }
+  # create base directories (on primary server only)
+  if $primary {
+      $root = '/srv/cinekid/'
 
-  # processing pipeline directories
-  $dirs = [
-    'samba',
-    'in',
-    'render_locks',
-    'render',
-    'tmp',
-    'done',
-  ]
+      file { $root:
+        ensure => directory,
+      }
 
-  # day directories to create in works directories
-  $days = range($day_start, $day_stop)
+      file { '/srv/cinekid/logs/':
+        ensure => directory,
+      }
 
-  # set default user for directories
-  File {
-    owner => $user,
-    group => $user
-  }
-  $_dirs = prefix(suffix($dirs, '/'), $root)
+      # processing pipeline directories
+      $dirs = [
+        'samba',
+        'in',
+        'render_locks',
+        'render',
+        'tmp',
+        'done',
+      ]
 
-  dir { $_dirs:
-    works => $works,
-    days  => $days,
+      # day directories to create in works directories
+      $days = range($day_start, $day_stop)
+
+      # set default user for directories
+      File {
+        owner => $user,
+        group => $user
+      }
+      $_dirs = prefix(suffix($dirs, '/'), $root)
+
+      dir { $_dirs:
+        works => $works,
+        days  => $days,
+      }
+
   }
 }
 

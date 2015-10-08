@@ -10,6 +10,7 @@ forge "https://forgeapi.puppetlabs.com"
 mod 'thias-samba'
 mod 'puppetlabs-apt'
 mod 'wilrnh-ffmpeg'
+mod 'echocat-nfs'
 # A module from git
 # mod 'puppetlabs-ntp',
 #   :git => 'git://github.com/puppetlabs/puppetlabs-ntp.git'
