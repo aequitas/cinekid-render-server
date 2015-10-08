@@ -42,7 +42,7 @@ $(bundle): $(gem)
 
 # install ruby
 $(gem):
-	sudo apt-get install -yqq ruby
+	sudo apt-get install -yqq ruby ruby1.9.1-dev
 
 # cleaning and maintenance
 
