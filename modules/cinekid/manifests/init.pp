@@ -44,7 +44,7 @@ class cinekid (
   }
 
   # install scripts
-  file { "/usr/local/bin/cinekid_processing_pipeline.sh":
+  file { "/usr/local/bin/cinekid_processing_pipeline.py":
     source => 'puppet:///modules/cinekid/src/cinekid_processing_pipeline.py',
     mode   => '0755',
   }

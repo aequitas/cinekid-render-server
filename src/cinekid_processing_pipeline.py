@@ -4,14 +4,17 @@
 Quits fast and can be run often to update pipeline.
 State is kept on the filesystem."""
 
-import os
-import multiprocessing
 import json
 import logging
-import subprocess
+import multiprocessing
+import os
+import platform
 import re
+import subprocess
+from collections import defaultdict
 
 log = logging.getLogger(__name__)
+
 # settings
 base_dir = '/srv/cinekid'
 render_re = re.compile('sleep 10')
@@ -27,6 +30,7 @@ render_dir = 'render'
 done_dir = 'done'
 tmp_dir = 'tmp'
 
+hostname = platform.node()
 cores = multiprocessing.cpu_count()
 
 def find(path):
@@ -55,20 +59,42 @@ def start_render(file):
     process = subprocess.Popen([render_cmd] + args, preexec_fn=os.setpgrp)
 
     with open(lock_file, 'w') as f:
-        f.write(json.dumps({'pid': process.pid}))
+        f.write(json.dumps({
+            'pid': process.pid,
+            'hostname': hostname
+        }))
     return process.pid
+
+def lockfiles_by_host(lockfiles):
+    host_lockfiles = defaultdict(list)
+
+    for lockfile in lockfiles:
+        lockfile_path = os.path.join(render_locks, lockfile)
+
+        try:
+            with open(lockfile_path, 'r') as f:
+                try:
+                    lockdata = json.loads(f.read())
+                    assert lockdata['hostname']
+                    assert lockdata['pid']
+                    lockdata['filename'] = lockfile
+                    host_lockfiles[lockdata.get('hostname')].append(lockdata)
+                except:
+                    log.exception('invalid lockfile %s, removing', lockfile_path)
+                    os.remove(os.path.join(render_locks, lockfile))
+                    continue
+        except FileNotFoundError:
+            log.warning('lock file %s no longer there ', lockfile_path)
+
+    return host_lockfiles
 
 def clean_render_files(lockfiles):
     """Remove lockfiles for processes that are no longer running."""
-    for lockfile in lockfiles:
-        with open(os.path.join(render_locks, lockfile),'r') as f:
-            try:
-                process = json.loads(f.read())
-                pid = str(process.get('pid'))
-            except:
-                log.error('invalid lockfile %s, removing', lockfile)
-                os.remove(os.path.join(render_locks, lockfile))
-                continue
+
+    host_lockfiles = lockfiles_by_host(lockfiles)
+
+    for lockfile in host_lockfiles.get(hostname, []):
+        pid = str(lockfile.get('pid'))
 
         cmdfile = os.path.exists(os.path.join('/proc/', pid, 'cmdline'))
         if not cmdfile:
@@ -76,6 +102,8 @@ def clean_render_files(lockfiles):
             os.remove(os.path.join(render_locks, lockfile))
 
 def main():
+    print('hostname: ', hostname)
+
     # get current state from filesystem
     samba_files = find(samba_dir)
     ready_files = samba_files
@@ -83,8 +111,19 @@ def main():
     rendering_done = find(render_dir)
     done_files = find(done_dir)
 
-    available_slots = max(0, cores - len(rendering_files))
-    print('render slots; total:', cores, 'available:', available_slots, 'running renders:', rendering_files)
+    rendering_by_host = lockfiles_by_host(rendering_files)
+    rendering_this_host = rendering_by_host.get(hostname, [])
+
+    available_slots = max(0, cores - len(rendering_this_host))
+    print('render slots; total:', cores, 'available:', available_slots)
+
+    if rendering_files:
+        print('rendering on hosts:')
+        for host, files in rendering_by_host.items():
+            print("  ", host, [f.get('filename') for f in files])
+    else:
+        print('nothing rendering at the moment')
+
 
     # determine files which need rendering
     render_files = [f for f in ready_files if not (
@@ -100,7 +139,7 @@ def main():
         pids = [p for p in map(start_render, to_process)]
         print('started render processes with pids:', pids)
     else:
-        print('nothing to do')
+        print('render slots full, not starting new renders')
 
     clean_render_files(rendering_files)
 

@@ -49,9 +49,6 @@ $(gem):
 mrproper:
 	rm -rf vendor/modules/* *.lock .gem .bundle
 
-empty_pipeline:
-	sudo find /srv/cinekid/{render_locks,done,logs,tmp}/ -type f -delete
-
 # status
 
 pipeline_files:
@@ -60,10 +57,27 @@ pipeline_files:
 status:
 	sudo tail -f /var/log/upstart/cinekid_processing_pipeline.log /var/log/upstart/cinekid_rsync.log
 
+status_pipeline:
+	sudo tail -f /var/log/upstart/cinekid_processing_pipeline.log
+
+status_rsync:
+	sudo tail -f /var/log/upstart/cinekid_rsync.log
+
 # testing
+
+dev:
+	sudo ln -sf `pwd`/src/* /usr/local/bin/
+	sudo chmod a+x /usr/local/bin/*
 
 ts = $(shell date +%s)
 testfile = test 12341234 $(ts).mp4
+
+empty_pipeline:
+	sudo find /srv/cinekid/{render_locks,done,logs,tmp}/ -type f -delete
+
+fill_incoming:
+	cat cinekid2015sourcevideos/test.mp4 | sudo -u cinekid tee "/srv/cinekid/samba/Test/10/$(testfile)" >/dev/null
+
 test:
 	# test guest login on samba
 	smbutil view -g //192.168.42.2 | grep Cinekid | grep Disk
@@ -85,5 +99,3 @@ test:
 	umount /Volumes/Cinekid
 
 	@echo -- All good --
-
-

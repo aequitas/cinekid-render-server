@@ -21,6 +21,17 @@ To reapply changes after the repository has been updated run these commands:
    git pull
    make
 
+# Status
+
+To get status information on the current process run this command:
+
+    make status
+
+For status on only rsync or rendering pipeline:
+
+    make status_pipeline
+    make status_rsync
+
 # General information
 
 - Puppet is used to bring the system to required state (install packages, make required directories, install commands and add daemons)
