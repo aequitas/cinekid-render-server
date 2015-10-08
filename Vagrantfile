@@ -11,10 +11,10 @@ Vagrant.configure(2) do |config|
     config.vm.network "private_network", ip: "192.168.42.3"
   end
 
-  config.vm.define "test-web-server" do |config|
-    config.vm.hostname = "test-web-server"
-    config.vm.network "private_network", ip: "192.168.42.10"
-  end
+  # config.vm.define "test-web-server" do |config|
+  #   config.vm.hostname = "test-web-server"
+  #   config.vm.network "private_network", ip: "192.168.42.10"
+  # end
 
   config.vm.provision "shell", keep_color: true, inline: "/usr/bin/make -C /vagrant"
 
