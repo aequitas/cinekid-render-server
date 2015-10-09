@@ -20,20 +20,24 @@ from collections import defaultdict
 from colorlog import ColoredFormatter
 
 # settings
-base_dir = '/srv/cinekid'
-video_ext = re.compile('[^\.].*(mp4|mov)$')
+# video formats to look for when scanning directories
+video_ext = re.compile('[^\.].*(mp4|mov|flv)$', re.I)
 # seconds a file not has to have been touched to be considered ready for rendering
 ready_age = 60
 
+# map work name (lowercase) to renderer and output file extension (None for same)
 render_mapping = {
-    'default': 'default',
-    # 'default': 'test',
+    'default': ('default', 'flv'),
+    # 'default': ('test', None),
+    # '': ('noop', None),
+    # 'mov': ('')
 
 }
 
 render_cmd = '/usr/local/bin/cinekid_render.sh'
 
 # internal variables
+base_dir = '/srv/cinekid'
 samba_dir = 'samba'
 in_dir = 'in'
 render_locks = 'render_locks'
@@ -67,12 +71,22 @@ cores = multiprocessing.cpu_count()
 def find(path):
     """Return files in path recursively, including directory name.
 
-    >>> find('samba_dir')
-    ['10/file1.mpg', '11/file2.mpg']
+    >>> find('test/samba/')
+    ['test/samba/Test/file1.mp4', 'test/samba/Test/file2.mp4']
     """
     return [os.path.join(dp, f).replace(path + '/', '')
         for dp, dn, fn in os.walk(path)
             for f in fn if video_ext.match(f)]
+
+def replace_ext(file_name, ext):
+    """If ext is provided replace the file name extension with ext.
+    >>> replace_ext('test.123', '321')
+    'test.321'
+    """
+    if not ext:
+        return file_name
+
+    return ".".join([file_name.rsplit('.', 1)[0], ext])
 
 def start_render(file_name):
     """Start background render process for file."""
@@ -80,8 +94,12 @@ def start_render(file_name):
 
     # get specific renderer for work or fallback to default
     work_name = file_name.split('/')[0]
-    renderer = render_mapping.get(work_name, render_mapping.get('default'))
-    log.info('looking up renderer for work named: %s = %s', work_name, renderer)
+    renderer, out_ext = render_mapping.get(work_name, render_mapping.get('default'))
+    log.info('looking up renderer for work named: %s = %s, extension change: %s', work_name, renderer, out_ext)
+
+    # replace extension for out files if configured so
+    tmp_file = replace_ext(os.path.join(tmp_dir, file_name), out_ext)
+    out_file = replace_ext(os.path.join(done_dir, file_name), out_ext)
 
     # compose arguments from render script
     args = [
@@ -89,8 +107,8 @@ def start_render(file_name):
         base_dir,
         lock_file,
         os.path.join(samba_dir, file_name),
-        os.path.join(tmp_dir, file_name),
-        os.path.join(done_dir, file_name),
+        tmp_file,
+        out_file,
     ]
 
     log.info('starting render command: %s %s', render_cmd, " ".join(args))
@@ -136,18 +154,32 @@ def clean_render_files(lockfiles):
 
         cmdfile = os.path.exists(os.path.join('/proc/', pid, 'cmdline'))
         if not cmdfile:
-            log.warning('process for lockfile %s, pid %s, no longer running, removing', lockfile, pid)
-            os.remove(os.path.join(render_locks, lockfile.get('filename')))
+            lockfile_path = os.path.join(render_locks, lockfile.get('filename'))
+            log.warning('process for lockfile %s, no longer running, removing %s', lockfile, lockfile_path)
+            os.remove(lockfile_path)
 
 def filter_ready(files, root=''):
     """Return only files which haven't been touched for a while."""
     now = int(time.time())
 
     for f in files:
-        mtime = int(os.path.getmtime(os.path.join(root, f)))
+        mtime = int(os.path.getctime(os.path.join(root, f)))
         age = now - mtime
         if age > ready_age:
             yield f
+
+def remove_done_and_rendering(ready_files, done_files, rendering_files):
+    """Accept list of files ready for processing, remove file which are done or rendering."""
+    for f in ready_files:
+        if f in rendering_files:
+            continue
+
+        # strip extension for done files as it might have changed
+        without_ext = f.rsplit('.', 1)[0]
+        if [f for f in done_files if without_ext in f]:
+            continue
+
+        yield f
 
 def main():
     log.info('this host id: %s', uuid)
@@ -174,8 +206,7 @@ def main():
 
 
     # determine files which need rendering
-    render_files = [f for f in ready_files if not (
-        f in done_files or f in rendering_files)]
+    render_files = list(remove_done_and_rendering(ready_files, done_files, rendering_files))
 
     log.info('file stats; samba: %s, ready: %s, need render: %s, rendering: %s, done: %s',
         len(samba_files), len(ready_files), len(render_files), len(rendering_files), len(done_files))
