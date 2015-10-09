@@ -32,6 +32,8 @@ For status on only rsync or rendering pipeline:
     make status_pipeline
     make status_rsync
 
+![alt tag](https://gitlab.com/aequitas/cinekid/raw/master/expected_output.png)
+
 # General information
 
 - Puppet is used to bring the system to required state (install packages, make required directories, install commands and add daemons)
