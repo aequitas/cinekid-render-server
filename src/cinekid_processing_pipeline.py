@@ -39,9 +39,7 @@ render_cmd = '/usr/local/bin/cinekid_render.sh'
 # internal variables
 base_dir = '/srv/cinekid'
 samba_dir = 'samba'
-in_dir = 'in'
 render_locks = 'render_locks'
-render_dir = 'render'
 done_dir = 'done'
 tmp_dir = 'tmp'
 
@@ -188,7 +186,6 @@ def main():
     samba_files = find(samba_dir)
     ready_files = list(filter_ready(samba_files, samba_dir))
     rendering_files = find(render_locks)
-    rendering_done = find(render_dir)
     done_files = find(done_dir)
 
     rendering_by_host = lockfiles_by_host(rendering_files)

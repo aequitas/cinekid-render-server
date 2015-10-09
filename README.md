@@ -21,6 +21,29 @@ To reapply changes after the repository has been updated run these commands:
    git pull
    make
 
+# Directory structure
+
+Working directory is:
+
+    /srv/cinekid
+
+This contain the following directories:
+
+- samba: files are uploaded here
+- render_locks: contains a lockfile when a video is rendering, lockfile contains PID and host id
+- tmp: contains temporary files during rendering
+- done: file is moved here when rendering is finished
+    - removing a file here will cause it to be rerendered
+    - this directory is rsynced to the webserver
+    - jpeg files are generated here after video is rendered
+- logs: contains logfiles for every render performed
+
+
+Other log files can be found at:
+
+    /var/log/upstart/cinekid_processing_pipeline.log
+    /var/log/upstart/cinekid_rsync.log
+
 # Status
 
 To get status information on the current process run this command:

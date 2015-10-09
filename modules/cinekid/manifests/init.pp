@@ -106,9 +106,7 @@ class cinekid (
       # processing pipeline directories
       $dirs = [
         'samba',
-        'in',
         'render_locks',
-        'render',
         'tmp',
         'done',
       ]
