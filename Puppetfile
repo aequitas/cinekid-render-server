@@ -11,6 +11,7 @@ mod 'thias-samba'
 mod 'puppetlabs-apt'
 mod 'wilrnh-ffmpeg'
 mod 'echocat-nfs'
+mod 'bodepd-pip', :git => 'https://github.com/bodepd/puppet-pip.git'
 # A module from git
 # mod 'puppetlabs-ntp',
 #   :git => 'git://github.com/puppetlabs/puppetlabs-ntp.git'

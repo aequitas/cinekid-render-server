@@ -13,7 +13,10 @@ class cinekid (
   $day_stop=20,
 ){
   # install required packages
-  package { ['libav-tools', 'rsync']:
+  package { ['libav-tools', 'rsync', 'python3-pip']:
+  } ->
+  package { ['colorlog']:
+    provider => 'pip3',
   }
 
   # create required user and group
@@ -54,6 +57,14 @@ class cinekid (
     source => 'puppet:///modules/cinekid/src/cinekid_render.sh',
     mode   => '0755',
   }
+  file { "/usr/local/bin/cinekid_render_test.sh":
+    source => 'puppet:///modules/cinekid/src/cinekid_render_test.sh',
+    mode   => '0755',
+  }
+  file { "/usr/local/bin/cinekid_render_default.sh":
+    source => 'puppet:///modules/cinekid/src/cinekid_render_default.sh',
+    mode   => '0755',
+  }
 
   # create processing pipeline daemon script
   file { "/etc/init/cinekid_processing_pipeline.conf":
@@ -63,6 +74,8 @@ class cinekid (
     ensure => running,
     enable => true,
   }
+  File["/usr/local/bin/cinekid_processing_pipeline.py"] ~>
+  Service['cinekid_processing_pipeline']
 
   # only run rsync on primary server
   $rsync_ensure = $primary ? { true => running, false => stopped }
