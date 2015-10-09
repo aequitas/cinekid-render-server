@@ -61,6 +61,10 @@ class cinekid (
     source => 'puppet:///modules/cinekid/src/cinekid_render_test.sh',
     mode   => '0755',
   }
+  file { "/usr/local/bin/cinekid_render_noop.sh":
+    source => 'puppet:///modules/cinekid/src/cinekid_render_noop.sh',
+    mode   => '0755',
+  }
   file { "/usr/local/bin/cinekid_render_default.sh":
     source => 'puppet:///modules/cinekid/src/cinekid_render_default.sh',
     mode   => '0755',
