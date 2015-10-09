@@ -79,7 +79,11 @@ empty_pipeline:
 fill_incoming:
 	cat cinekid2015sourcevideos/test.mp4 | sudo -u cinekid tee "/srv/cinekid/samba/Test/10/$(testfile)" >/dev/null
 
+.PHONY: test
 test:
+	python3 -m py.test --doctest-modules src/
+
+integration-test:
 	# test guest login on samba
 	smbutil view -g //192.168.42.2 | grep Cinekid | grep Disk
 
