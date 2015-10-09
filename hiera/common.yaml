@@ -1,4 +1,11 @@
-# --- below this line, settings which can be modified ---
+# --- these are default settings, do not modify!!! ---
+#
+#
+#
+# modify settings.yaml instead
+#
+#
+#
 
 # ip addresses for primary and secondary server(s)
 cinekid::nfs::primary_server: 192.168.42.2

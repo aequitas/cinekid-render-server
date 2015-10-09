@@ -36,6 +36,7 @@ For status on only rsync or rendering pipeline:
 
 # General information
 
+- List of files to render is shuffeled every time, so invalid files don't block the rendering pipeline
 - Puppet is used to bring the system to required state (install packages, make required directories, install commands and add daemons)
 - A user `cinekid` will be created and used for all actions, make sure you act as user `cinekid` when manually modifying files/directories: `sudo -u cinekid`
 - These errors are normal:
@@ -45,11 +46,15 @@ For status on only rsync or rendering pipeline:
 
 # Settings
 
-Refer to the file:
+Copy the file:
 
-    hiera/common.yaml
+    hiera/settings.yaml.dist
 
-To find configurable settings.
+To:
+
+    hiera/settings.yaml
+
+And modify files for setting overrides.
 
 After changing settings run puppet apply again:
 

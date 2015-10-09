@@ -7,4 +7,5 @@
 
 :hierarchy:
   - "%{::hostname}"
+  - settings
   - common

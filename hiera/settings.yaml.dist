@@ -1,0 +1,66 @@
+#
+# Rename to:
+#
+# settings.yaml
+#
+# uncomment lines to overwrite settings
+
+# # ip addresses for primary and secondary server(s)
+# cinekid::nfs::primary_server: 192.168.42.2
+# cinekid::nfs::secondary_servers:
+#     - 192.168.42.3
+#
+# # works folders that need to be created
+# cinekid::works:
+#   - Sjef de Superchef
+#   - Plastic Monstertjes
+#   - FilmSpel.nl
+#   - VR Stereobril
+#   - VR Metropolis
+#   - VideoMapping
+#   - Quirkbot - Touchboard
+#   - EBOTRACK
+#   - Test
+#
+# # range of day that need to be created in works folders
+# cinekid::day_start: 10
+# cinekid::day_stop: 20
+#
+# # user and ssh key for webserver sftp sync
+# cinekid::web_user: ***REMOVED***
+# cinekid::web_host: ***REMOVED***
+# cinekid::web_target: results
+#
+# cinekid::private_key: |
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#   ***REMOVED***
+#
+# cinekid::public_key: ***REMOVED***
+#
+# # message on the smb server
+# samba::server::server_string: CineKid Encode Server
