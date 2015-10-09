@@ -23,7 +23,8 @@ apply: Puppetfile.lock | $(puppet)
 	sudo -E $(puppet) apply --verbose \
 	  --modulepath=modules:vendor/modules \
 	  --hiera_config=hiera.yaml \
-	  manifests/site.pp
+	  manifests/site.pp \
+	  2>&1 | egrep -v 'Warning: (Setting templatedir is|You cannot collect without storeconfigs)'
 
 # setup environment
 bootstrap: | $(puppet) $(librarian-puppet)
