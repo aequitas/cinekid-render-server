@@ -86,3 +86,10 @@ samba::server::shares:
     - guest ok = yes
     - browsable = yes
     - read only = no
+
+  Cinekid-Rendered-Files:
+    - writable = yes
+    - path = /srv/cinekid/done/
+    - guest ok = yes
+    - browsable = yes
+    - read only = yes
