@@ -218,7 +218,10 @@ def main():
         pids = [p for p in map(start_render, to_process)]
         log.info('started render processes with pids: %s', pids)
     else:
-        log.info('render slots full, not starting new renders')
+        if available_slots:
+            log.info('no files need rendering')
+        else:
+            log.info('render slots full, not starting new renders')
 
     clean_render_files(rendering_files)
 
