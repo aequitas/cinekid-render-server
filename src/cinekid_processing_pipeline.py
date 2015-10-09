@@ -19,6 +19,8 @@ from collections import defaultdict
 
 from colorlog import ColoredFormatter
 
+log = logging.getLogger(__name__)
+
 # settings
 # video formats to look for when scanning directories
 video_ext = re.compile('[^\.].*(mp4|mov|flv|webm|avi|mpg|mpeg)$', re.I)
@@ -27,12 +29,11 @@ ready_age = 60
 
 # map work name (lowercase) to renderer and output file extension (None for same)
 render_mapping = {
-    'default': ('webm', 'webm'),
-    # 'default': ('default', 'flv'),
+    'default': ('default', 'flv'),
+    # 'default': ['webm', 'webm'],
     # 'default': ('test', None),
     # '': ('noop', None),
     # 'mov': ('')
-
 }
 
 render_cmd = '/usr/local/bin/cinekid_render.sh'
@@ -87,7 +88,7 @@ def replace_ext(file_name, ext):
 
     return ".".join([file_name.rsplit('.', 1)[0], ext])
 
-def start_render(file_name):
+def start_render(file_name, render_mapping):
     """Start background render process for file."""
     lock_file = os.path.join(render_locks, file_name)
 
@@ -183,6 +184,18 @@ def remove_done_and_rendering(ready_files, done_files, rendering_files):
 def main():
     log.info('this host id: %s', uuid)
 
+    # try loading render mapping from file
+    try:
+        render_mapping_file = '/home/cinekid/render_mapping.json'
+        if os.path.exists(render_mapping_file):
+            with open(render_mapping_file) as f:
+                render_mapping.update(json.loads(f.read()))
+            log.info('loaded render mapping override from file: %s', render_mapping_file)
+    except:
+        log.exception('failed to load render mapping from file: %s', render_mapping_file)
+
+
+
     # get current state from filesystem
     samba_files = find(samba_dir)
     ready_files = list(filter_ready(samba_files, samba_dir))
@@ -215,7 +228,7 @@ def main():
     if to_process:
         log.info('going to start render of: %s', to_process)
 
-        pids = [p for p in map(start_render, to_process)]
+        pids = [start_render(f, render_mapping) for f in to_process]
         log.info('started render processes with pids: %s', pids)
     else:
         if available_slots:
@@ -228,7 +241,6 @@ def main():
 if __name__ == "__main__":
     os.chdir(base_dir)
 
-    log = logging.getLogger(__name__)
     log.setLevel(logging.INFO)
     ch = logging.StreamHandler()
     ch.setFormatter(formatter)
