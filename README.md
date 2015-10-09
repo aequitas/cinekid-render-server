@@ -32,7 +32,7 @@ For status on only rsync or rendering pipeline:
     make status_pipeline
     make status_rsync
 
-![alt tag](https://gitlab.com/aequitas/cinekid/raw/master/expected_output.png)
+![expected output](https://gitlab.com/aequitas/cinekid/raw/master/expected%20output.png)
 
 # General information
 
