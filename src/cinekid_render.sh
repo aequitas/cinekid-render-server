@@ -25,7 +25,7 @@ in_file=$3
 tmp=$4
 out=$5
 
-jpg=$(echo ${out}|sed 's/\....$/'.jpg/)
+jpg=$(echo ${out}|sed -E 's/\.....?$/'.jpg/)
 
 echo "starting conversion"
 
@@ -38,7 +38,7 @@ test -f "${tmp}"
 echo "finished conversion"
 
 echo "starting generating jpg"
-avconv -i "${in_file}" -ss 00:00:10.0 -vcodec mjpeg -vframes 1 -loglevel error -f image2 "${jpg}"
+avconv -i "${in_file}" -ss 00:00:10.0 -vcodec mjpeg -vframes 1 -f image2 "${jpg}"
 echo "finished generating jpg"
 
 mv "${tmp}" "${out}"

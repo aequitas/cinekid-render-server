@@ -69,6 +69,10 @@ class cinekid (
     source => 'puppet:///modules/cinekid/src/cinekid_render_default.sh',
     mode   => '0755',
   }
+  file { "/usr/local/bin/cinekid_render_webm.sh":
+    source => 'puppet:///modules/cinekid/src/cinekid_render_webm.sh',
+    mode   => '0755',
+  }
 
   # create processing pipeline daemon script
   file { "/etc/init/cinekid_processing_pipeline.conf":

@@ -21,13 +21,14 @@ from colorlog import ColoredFormatter
 
 # settings
 # video formats to look for when scanning directories
-video_ext = re.compile('[^\.].*(mp4|mov|flv)$', re.I)
+video_ext = re.compile('[^\.].*(mp4|mov|flv|webm|avi|mpg|mpeg)$', re.I)
 # seconds a file not has to have been touched to be considered ready for rendering
 ready_age = 60
 
 # map work name (lowercase) to renderer and output file extension (None for same)
 render_mapping = {
-    'default': ('default', 'flv'),
+    'default': ('webm', 'webm'),
+    # 'default': ('default', 'flv'),
     # 'default': ('test', None),
     # '': ('noop', None),
     # 'mov': ('')
