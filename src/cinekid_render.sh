@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 
+base=$2
+in_file=$4
+
+# generate logfile name and output before redirecting
+now=$(date +%s)
+logfile=${base}/logs/${in_file//[^0-9a-zA-Z]/_}.${now}.log
+echo "logging to: ${logfile}" 1>&2
+
+# redirect output log logfile
+exec > ${logfile} 2>&1
+
+# fail on first error, print executing command and interpretation of command
+set -vex
+
 # get renderer name from first arg, and strip it from args list
 renderer=$1
 shift
@@ -11,18 +25,7 @@ in_file=$3
 tmp=$4
 out=$5
 
-jpg=${out/%.mp4/.jpg}
-
-now=$(date +%s)
-
-logfile=${base}/logs/${in_file//[^0-9a-zA-Z]/_}.${now}.log
-echo "logging to: ${logfile}" 1>&2
-
-# redirect output log logfile
-exec > ${logfile} 2>&1
-
-# fail on first error
-set -vex
+jpg=$(echo ${out}|sed 's/\....$/'.jpg/)
 
 echo "starting conversion"
 
