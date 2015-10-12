@@ -23,7 +23,7 @@ log = logging.getLogger(__name__)
 
 # settings
 # video formats to look for when scanning directories
-video_ext = re.compile('[^\.].*(mp4|mov|flv|webm|avi|mpg|mpeg)$', re.I)
+video_ext = re.compile('[^\.].*(mp4|mov|flv|webm|avi|mpg|mpeg|m4v)$', re.I)
 # seconds a file not has to have been touched to be considered ready for rendering
 ready_age = 60
 
