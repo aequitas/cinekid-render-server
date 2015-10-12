@@ -123,6 +123,33 @@ To test if the json file is valid run this command:
 
 It should output the contents of the json file on success, or an error on failure.
 
+<<<<<<< HEAD
+=======
+## Available renderers
+
+Renderers are 'bash' scripts living in the directory:
+
+    /srv/cinekid/renderers
+
+They are named:
+
+    cinekid_renderer_######.sh
+
+Where ####### is the renderer name.
+
+Default installed renderers are:
+
+    - default: the default renderer, rendering files to h264/AAC.
+    - noop: NO OPeration renderer. 'Copies' the file as-is to output.
+
+Renderers are extension agnostic. Extensions are set in the `render_mapping.json` file.
+
+To experiment with renderers it is possible to create a copy of a existing renderer (preferable 'default') in the same directory with a different 'renderer name'.
+
+This can then be references in the 'render_mapping.json' without modification of the application sourcecode.
+
+
+>>>>>>> b395635... Move renderers into /srv/cinekid/renderers to allow creating custom renderers more easily
 # Debugging
 
 Watching output of processing pipeline:
