@@ -10,5 +10,5 @@ base=$1
 in_file=$3
 tmp=$4
 
-# perform render to tmp file
-cp "${in_file}" "${tmp}"
+# do not render file, but hardlink to output directory
+ln "${in_file}" "${tmp}"

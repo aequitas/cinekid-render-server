@@ -88,6 +88,41 @@ Settings which are required are:
     cinekid::nfs::primary_server
     cinekid::nfs::secondary_server
 
+# Override render mapping
+
+To override which render script is used for which 'werkje' directory or input extension create the following file:
+
+    /srv/cinekid/config/render_mapping.json
+
+This file should be a valid json file containing a json object (dict) mapping 'werkje' directories and extensions to lists containing a rendered name and desired output extension.
+
+## Examples
+
+To render file with de `default` renderer by default (so if not overwritten by another rule) using the `m4v` extension for the output file put this in the file:
+
+    {
+        "default": ["default", "m4v"]
+    }
+
+To have the files of `TestWerkje123` not processed at all but just passed on as-is (without changing the extension) use this:
+
+    {
+        "TestWerkje123": ["noop", None]
+    }
+
+Multiple rules can be combined like this:
+
+    {
+        "default": ["default", "m4v"],
+        "TestWerkje123": ["noop", None]
+    }
+
+To test if the json file is valid run this command:
+
+    python -m json.tool /srv/cinekid/config/render_mapping.json
+
+It should output the contents of the json file on success, or an error on failure.
+
 # Debugging
 
 Watching output of processing pipeline:

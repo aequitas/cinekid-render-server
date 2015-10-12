@@ -16,5 +16,5 @@ tmp=$4
 # -ab ???
 # -vcodec force video codec
 
-avconv -y -i "${in_file}" -acodec aac -strict experimental -ar 44100 -ab 96k \
+/usr/bin/avconv -y -i "${in_file}" -acodec aac -strict experimental -ar 44100 -ab 96k \
     -vcodec libx264 -b:v 1600k -bt 1600k -threads 0 "${tmp}"

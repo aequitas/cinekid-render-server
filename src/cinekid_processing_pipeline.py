@@ -5,7 +5,6 @@ Quits fast and can be run often to update pipeline.
 State is kept on the filesystem."""
 
 import hashlib
-import json
 import logging
 import multiprocessing
 import os
@@ -17,19 +16,23 @@ import subprocess
 import time
 from collections import defaultdict
 
+import simplejson
 from colorlog import ColoredFormatter
 
 log = logging.getLogger(__name__)
 
 # settings
 # video formats to look for when scanning directories
-video_ext = re.compile('[^\.].*(mp4|mov|flv|webm|avi|mpg|mpeg|m4v)$', re.I)
+process_file_ext = re.compile('[^\.].*(mp4|mov|flv|webm|avi|mpg|mpeg|m4v|apk)$', re.I)
 # seconds a file not has to have been touched to be considered ready for rendering
 ready_age = 60
 
 # map work name (lowercase) to renderer and output file extension (None for same)
 render_mapping = {
-    'default': ('default', 'flv'),
+    # by default, use default renderer with m4v output extension
+    'default': ('default', 'm4v'),
+    # do nothing with apk files
+    'apk': ('noop', None),
     # 'default': ['webm', 'webm'],
     # 'default': ('test', None),
     # '': ('noop', None),
@@ -44,6 +47,7 @@ samba_dir = 'samba'
 render_locks = 'render_locks'
 done_dir = 'done'
 tmp_dir = 'tmp'
+render_mapping_file = os.path.join(base_dir, 'config', 'render_mapping.json')
 
 # configure logging
 formatter = ColoredFormatter(
@@ -76,7 +80,7 @@ def find(path):
     """
     return [os.path.join(dp, f).replace(path + '/', '')
         for dp, dn, fn in os.walk(path)
-            for f in fn if video_ext.match(f)]
+            for f in fn if process_file_ext.match(f)]
 
 def replace_ext(file_name, ext):
     """If ext is provided replace the file name extension with ext.
@@ -94,12 +98,25 @@ def start_render(file_name, render_mapping):
 
     # get specific renderer for work or fallback to default
     work_name = file_name.split('/')[0]
-    renderer, out_ext = render_mapping.get(work_name, render_mapping.get('default'))
-    log.info('looking up renderer for work named: %s = %s, extension change: %s', work_name, renderer, out_ext)
+    extension = file_name.rsplit('.')[-1]
+
+    renderer_from_work_dir = render_mapping.get(work_name, None)
+    renderer_from_extension = render_mapping.get(extension)
+    renderer_default = render_mapping.get('default')
+    renderer = renderer_from_work_dir or renderer_from_extension or renderer_default
+
+    renderer, out_ext = renderer
+
+    log.info('looking up renderer for work: %s, %s: %s, extension change: %s',
+        work_name, extension, renderer, out_ext)
 
     # replace extension for out files if configured so
-    tmp_file = replace_ext(os.path.join(tmp_dir, file_name), out_ext)
-    out_file = replace_ext(os.path.join(done_dir, file_name), out_ext)
+    if out_ext:
+        tmp_file = replace_ext(os.path.join(tmp_dir, file_name), out_ext)
+        out_file = replace_ext(os.path.join(done_dir, file_name), out_ext)
+    else:
+        tmp_file = os.path.join(tmp_dir, file_name)
+        out_file = os.path.join(done_dir, file_name)
 
     # compose arguments from render script
     args = [
@@ -115,7 +132,7 @@ def start_render(file_name, render_mapping):
     process = subprocess.Popen([render_cmd] + args, preexec_fn=os.setpgrp)
 
     with open(lock_file, 'w') as f:
-        f.write(json.dumps({
+        f.write(simplejson.dumps({
             'pid': process.pid,
             'uuid': uuid
         }))
@@ -130,7 +147,7 @@ def lockfiles_by_host(lockfiles):
         try:
             with open(lockfile_path, 'r') as f:
                 try:
-                    lockdata = json.loads(f.read())
+                    lockdata = simplejson.loads(f.read())
                     assert lockdata['uuid']
                     assert lockdata['pid']
                     lockdata['filename'] = lockfile
@@ -186,15 +203,13 @@ def main():
 
     # try loading render mapping from file
     try:
-        render_mapping_file = '/home/cinekid/render_mapping.json'
         if os.path.exists(render_mapping_file):
             with open(render_mapping_file) as f:
-                render_mapping.update(json.loads(f.read()))
-            log.info('loaded render mapping override from file: %s', render_mapping_file)
+                render_mapping.update(simplejson.loads(f.read(), strict=False))
+            log.warning('loaded render mapping override from file: %s', render_mapping_file)
     except:
         log.exception('failed to load render mapping from file: %s', render_mapping_file)
-
-
+    log.debug('render mapping: %s', render_mapping)
 
     # get current state from filesystem
     samba_files = find(samba_dir)

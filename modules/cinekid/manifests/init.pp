@@ -15,7 +15,7 @@ class cinekid (
   # install required packages
   package { ['libav-tools', 'rsync', 'python3-pip']:
   } ->
-  package { ['colorlog']:
+  package { ['colorlog', 'simplejson']:
     provider => 'pip3',
   }
 
@@ -52,28 +52,6 @@ class cinekid (
     mode   => '0755',
   }
 
-  # install scripts
-  file { "/usr/local/bin/cinekid_render.sh":
-    source => 'puppet:///modules/cinekid/src/cinekid_render.sh',
-    mode   => '0755',
-  }
-  file { "/usr/local/bin/cinekid_render_test.sh":
-    source => 'puppet:///modules/cinekid/src/cinekid_render_test.sh',
-    mode   => '0755',
-  }
-  file { "/usr/local/bin/cinekid_render_noop.sh":
-    source => 'puppet:///modules/cinekid/src/cinekid_render_noop.sh',
-    mode   => '0755',
-  }
-  file { "/usr/local/bin/cinekid_render_default.sh":
-    source => 'puppet:///modules/cinekid/src/cinekid_render_default.sh',
-    mode   => '0755',
-  }
-  file { "/usr/local/bin/cinekid_render_webm.sh":
-    source => 'puppet:///modules/cinekid/src/cinekid_render_webm.sh',
-    mode   => '0755',
-  }
-
   # create processing pipeline daemon script
   file { "/etc/init/cinekid_processing_pipeline.conf":
     content => template('cinekid/cinekid_processing_pipeline.conf'),
@@ -106,6 +84,37 @@ class cinekid (
       file { '/srv/cinekid/logs/':
         ensure => directory,
       }
+
+      file { '/srv/cinekid/config/':
+        ensure => directory,
+      }
+
+      file { '/srv/cinekid/renderers/':
+        ensure => directory,
+      }
+
+      # install scripts
+      file { "/srv/cinekid/renderers/cinekid_render.sh":
+        source => 'puppet:///modules/cinekid/src/cinekid_render.sh',
+        mode   => '0755',
+      }
+      file { "/srv/cinekid/renderers/cinekid_render_test.sh":
+        source => 'puppet:///modules/cinekid/src/cinekid_render_test.sh',
+        mode   => '0755',
+      }
+      file { "/srv/cinekid/renderers/cinekid_render_noop.sh":
+        source => 'puppet:///modules/cinekid/src/cinekid_render_noop.sh',
+        mode   => '0755',
+      }
+      file { "/srv/cinekid/renderers/cinekid_render_default.sh":
+        source => 'puppet:///modules/cinekid/src/cinekid_render_default.sh',
+        mode   => '0755',
+      }
+      file { "/srv/cinekid/renderers/cinekid_render_webm.sh":
+        source => 'puppet:///modules/cinekid/src/cinekid_render_webm.sh',
+        mode   => '0755',
+      }
+
 
       # processing pipeline directories
       $dirs = [
