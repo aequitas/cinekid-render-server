@@ -123,8 +123,6 @@ To test if the json file is valid run this command:
 
 It should output the contents of the json file on success, or an error on failure.
 
-<<<<<<< HEAD
-=======
 ## Available renderers
 
 Renderers are 'bash' scripts living in the directory:
@@ -148,8 +146,6 @@ To experiment with renderers it is possible to create a copy of a existing rende
 
 This can then be references in the 'render_mapping.json' without modification of the application sourcecode.
 
-
->>>>>>> b395635... Move renderers into /srv/cinekid/renderers to allow creating custom renderers more easily
 # Debugging
 
 Watching output of processing pipeline:
