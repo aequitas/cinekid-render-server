@@ -39,7 +39,6 @@ render_mapping = {
     # 'mov': ('')
 }
 
-render_cmd = '/usr/local/bin/cinekid_render.sh'
 
 # internal variables
 base_dir = '/srv/cinekid'
@@ -48,6 +47,8 @@ render_locks = 'render_locks'
 done_dir = 'done'
 tmp_dir = 'tmp'
 render_mapping_file = os.path.join(base_dir, 'config', 'render_mapping.json')
+
+render_cmd = os.path.join(base_dir, 'renderers', 'cinekid_render.sh')
 
 # configure logging
 formatter = ColoredFormatter(
