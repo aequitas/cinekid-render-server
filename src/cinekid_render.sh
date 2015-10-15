@@ -25,37 +25,21 @@ in_file=$3
 tmp=$4
 out=$5
 
+injpg=$(echo ${in_file}|sed -E 's/\.....?$/'.jpg/)
+tmpjpg=$(echo ${tmp}|sed -E 's/\.....?$/'.jpg/)
 jpg=$(echo ${out}|sed -E 's/\.....?$/'.jpg/)
 
 echo "starting conversion"
 
 # start specified renderer with remaining args
-${base}/renderers/cinekid_render_${renderer}.sh "$1" "$2" "$3" "$4" "$5"
+${base}/renderers/cinekid_render_${renderer}.sh "$1" "$2" "$3" "$4" "$5" "${injpg}" "${tmpjpg}"
 
 # check if tmp output file has been created
 test -f "${tmp}"
 
 echo "finished conversion"
 
-# test if in file is video, and generate jpg thumbnail
-if /usr/bin/avprobe "${in_file}";then
-    echo "starting generating jpg at 10 seconds"
-    /usr/bin/avconv -i "${in_file}" -ss 00:00:10.0 -vcodec mjpeg -vframes 1 -f image2 "${jpg}";
-    if test -f "${jpg}";then 
-        echo "finished generating jpg at 10 second"
-    else
-        echo "failed generating jpg at 10 seconds (video to short?)"
-        echo "starting generating jpg at 0 seconds"
-        /usr/bin/avconv -i "${in_file}" -ss 00:00:00.0 -vcodec mjpeg -vframes 1 -f image2 "${jpg}"
-        if test -f "${jpg}";then 
-            echo "finished generating jpg at 0 second"
-        else
-            echo "failed to generate jpg at 1 second or 10 seconds"
-        fi
-    fi
-else
-    echo "no video file, skipping thumbnail"
-fi
+mv "${tmpjpg}" "${jpg}"
 
 # make file 'done'
 mv "${tmp}" "${out}"
