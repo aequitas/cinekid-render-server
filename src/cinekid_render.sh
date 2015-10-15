@@ -38,7 +38,7 @@ test -f "${tmp}"
 echo "finished conversion"
 
 # test if in file is video, and generate jpg thumbnail
-if $(/usr/bin/avprobe "${in_file}");then
+if /usr/bin/avprobe "${in_file}";then
     echo "starting generating jpg"
     /usr/bin/avconv -i "${in_file}" -ss 00:00:10.0 -vcodec mjpeg -vframes 1 -f image2 "${jpg}"
     echo "finished generating jpg"
