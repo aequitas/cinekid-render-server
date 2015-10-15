@@ -11,4 +11,4 @@ in_file=$3
 tmp=$4
 
 # do not render file, but hardlink to output directory
-ln "${in_file}" "${tmp}"
+ln -f "${in_file}" "${tmp}"
