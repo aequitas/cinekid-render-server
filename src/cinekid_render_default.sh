@@ -25,7 +25,7 @@ echo "starting video conversion"
 echo "finished video conversion"
 
 echo "starting generating jpg at 10 seconds"
-/usr/bin/avconv -i "${in_file}" -ss 00:00:10.0 -vcodec mjpeg -vframes 1 -f image2 "${tmpjpg}";
+/usr/bin/avconv -i "${in_file}" -ss 00:00:10.0 -vcodec mjpeg -vframes 1 -f image2 "${tmpjpg}"
 if test -f "${tmpjpg}";then
     echo "finished generating jpg at 10 second"
 else

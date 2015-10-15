@@ -7,6 +7,8 @@ set -vex
 base=$1
 in_file=$3
 tmp=$4
+injpg=$6
+tmpjpg=$7
 
 # perform render to tmp file
 # -y overwrite output
@@ -19,3 +21,5 @@ tmp=$4
 avconv -y -i "${in_file}" -ar 44100 -ab 96k -b:v 1600k -bt 1600k \
     -deblock 0:0 -bufsize 20000k -maxrate 25000k -threads 0 \
     "${tmp}"
+
+/usr/bin/avconv -i "${in_file}" -ss 00:00:10.0 -vcodec mjpeg -vframes 1 -f image2 "${tmpjpg}"
