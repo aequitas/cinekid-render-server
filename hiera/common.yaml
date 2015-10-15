@@ -14,15 +14,15 @@ cinekid::nfs::secondary_servers:
 
 # works folders that need to be created
 cinekid::works:
-  - Sjef de Superchef
-  - Plastic Monstertjes
-  - FilmSpel.nl
-  - VR Stereobril
-  - VR Metropolis
-  - VideoMapping
-  - Quirkbot - Touchboard
-  - EBOTRACK
-  - Test
+   - superchef
+   - plasticmonstertjes
+   - filmspel
+   - vrstereobril
+   - vrmetropolis
+   - videomapping
+   - quirkbot-touchboard
+   - ebotrack
+   - test
 
 # range of day that need to be created in works folders
 cinekid::day_start: 10
