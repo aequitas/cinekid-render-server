@@ -39,12 +39,16 @@ echo "finished conversion"
 
 # test if in file is video, and generate jpg thumbnail
 if /usr/bin/avprobe "${in_file}";then
-    echo "starting generating jpg"
-    if /usr/bin/avconv -i "${in_file}" -ss 00:00:10.0 -vcodec mjpeg -vframes 1 -f image2 "${jpg}";then
-        echo "finished generating jpg at 10 seconds"
+    echo "starting generating jpg at 10 seconds"
+    /usr/bin/avconv -i "${in_file}" -ss 00:00:10.0 -vcodec mjpeg -vframes 1 -f image2 "${jpg}";
+    if test -f "${jpg}";then 
+        echo "finished generating jpg at 10 second"
     else
-        if /usr/bin/avconv -i "${in_file}" -ss 00:00:00.0 -vcodec mjpeg -vframes 1 -f image2 "${jpg}";then
-            echo "finished generating jpg at 1 second"
+        echo "failed generating jpg at 10 seconds (video to short?)"
+        echo "starting generating jpg at 0 seconds"
+        /usr/bin/avconv -i "${in_file}" -ss 00:00:00.0 -vcodec mjpeg -vframes 1 -f image2 "${jpg}"
+        if test -f "${jpg}";then 
+            echo "finished generating jpg at 0 second"
         else
             echo "failed to generate jpg at 1 second or 10 seconds"
         fi
