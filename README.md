@@ -55,7 +55,7 @@ For status on only rsync or rendering pipeline:
     make status_pipeline
     make status_rsync
 
-![expected output](https://gitlab.com/aequitas/cinekid/raw/master/expected%20output.png)
+![expected output](https://raw.githubusercontent.com/aequitas/cinekid2015/master/expected%20output.png)
 
 # General information
 
