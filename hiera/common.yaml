@@ -33,36 +33,8 @@ cinekid::web_user: ***REMOVED***
 cinekid::web_host: ***REMOVED***
 cinekid::web_target: results
 
-cinekid::private_key: |
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-
-cinekid::public_key: ***REMOVED***
+cinekid::private_key:
+cinekid::public_key:
 
 # message on the smb server
 samba::server::server_string: CineKid Encode Server
