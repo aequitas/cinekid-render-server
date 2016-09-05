@@ -121,10 +121,17 @@ integration-test:
 	# copy test video
 	cp "cinekid2015sourcevideos/test.mp4" "/Volumes/Cinekid/test/10/$(testfile)"
 
-	# test if file is rendered
-	while sleep 5; do \
-		vagrant ssh encode-server-1 -- 'test -f "/srv/cinekid/done/test/10/$(testfile)"' && break; \
-	done
+	# test if file is rendered (can take a few minutes)
+	vagrant ssh encode-server-1 -- 'timeout 300 bash -c "\
+		while sleep 5; do \
+			test -f \"/srv/cinekid/done/test/10/$(testfile)\" && break; \
+		done "'
+
+	# test if file is uploaded to webserver
+	vagrant ssh test-web-server -- 'timeout 60 bash -c "\
+		while sleep 5; do \
+			test -f \"/home/cinekid/results/test/10/$(testfile)\" && break; \
+		done "'
 
 	# cleanup
 	umount /Volumes/Cinekid
