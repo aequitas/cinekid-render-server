@@ -31,10 +31,10 @@ Puppetfile.lock: Puppetfile | $(librarian-puppet)
 apply: Puppetfile.lock /var/run/.initial_apt| $(puppet)
 	# apply configuration
 	sudo -E $(puppet) apply --verbose \
-	  --modulepath=modules:vendor/modules \
-	  --hiera_config=hiera.yaml \
-	  manifests/site.pp \
-	  2>&1 | egrep -v 'Warning: (Setting templatedir is|You cannot collect without storeconfigs)'
+		--modulepath=modules:vendor/modules \
+		--hiera_config=hiera.yaml \
+		manifests/site.pp \
+		2>&1 | egrep -v 'Warning: (Setting templatedir is|You cannot collect without storeconfigs)'
 
 # setup environment
 bootstrap: | $(puppet) $(librarian-puppet)
@@ -58,7 +58,10 @@ $(gem):
 # cleaning and maintenance
 
 mrproper:
+	# cleaning up everything
 	rm -rf vendor/modules/* *.lock .gem .bundle $(VIRTUALENV) .initial_apt.*
+	# undo vagrant boxes
+	vagrant destroy -f
 
 # status
 
