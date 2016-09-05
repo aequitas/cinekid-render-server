@@ -29,12 +29,40 @@ cinekid::day_start: 10
 cinekid::day_stop: 20
 
 # user and ssh key for webserver sftp sync
-cinekid::web_user: user
-cinekid::web_host: localhost
+cinekid::web_user: cinekid
+cinekid::web_host: 192.168.42.10
 cinekid::web_target: results
 
-cinekid::private_key:
-cinekid::public_key:
+# ssh keys for rsync (default for testing)
+cinekid::private_key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  MIIEogIBAAKCAQEAvNZiDGI21P6S1K8HwDkx80D7f/7RLuSI6ruzUIlK6YcE7udM
+  lE3byrQZLkvzehRzhgTWXnqY1Bkcbwm/iGHJZqD/lxlP2ONCZC8Lq4l00JPAiU8q
+  q3ijoEfxDz6Dv2N2zsPjlTWFHiFtPcf8CsuXGRFJ0m/kfO/oDQv6GT8jhpy/el67
+  HHmZSxc/5Fk39zj8IoP9CA/TmwCZJHuPbioCzOUUiaWa+ObYPEYQ/obIQ/CaYm3X
+  TWErOiUPdpJLkAKICy8Aj9BOw1pnYL8inBetv5GS0V9AtS+gk1uzZH4W9x5fPI98
+  e7Jqzm2b2oT9Z9r4DaMch2VGUBaH88rbSOe6HwIDAQABAoIBADdD1rYhGEMFrhso
+  jnAnTQMQBYrUHIxIvflUrYnoZFAr/7mbX8IXdze/tY7jE4Kq8ZRLXiGQZ6HLJ5Mn
+  mzJiy/qJK8Qg2El1WTzQt+2f8NwKIdMNpENCr0B9TYNUnGIqzd59XeGRJEBJMBtg
+  p9bQ9ouTj7NSo+AcpiELXEp/O/ps7JeuGB/lT55tQRxCHpoSOFUh/FdgGz8ShCvO
+  Wpo6ShZgdEntzdpOgKnoXIL1Lx3Nw8ksQyYP+x/xMIUY4IPaASxt892yC4rGsjhZ
+  Q6pk5sJSJyquQ/jrxGLiISQ5xxz1wCxDv4o7i8S3MgvJn/nzsIK3ERTUbVcp2Kie
+  8/PtUkECgYEA5kiocRcxQCGTrj6mokN8YuUqo7OJWIgSFiZhkqdWihWVeILGRTES
+  Bph/LC4bGWO2lxsx09kyxk8V9W2dFwPqym3gD6qex1OxK+0ZRyX2qc07HvUw4xiD
+  yZhxa9wf5EQ1TarfUpZdhJBCuTttpwUO/urHM+JJ/KuVNjRhCJ/A+0kCgYEA0ezb
+  nFHgaA+pezQmSzjTCxLSCquLFzG2rUyMsCfgES+doOglVLYZ+KlefHKlosUliyrU
+  s5s4XLKEEhpYD2D5Zu6GTSf1IS91KiqeYfPn37S29b6H+GW8zM0FPZInDlubo7ic
+  F46WOIL/7HVmFtvVfzeUXsvLHzQvh6M6rDxT4icCgYA3CHoovLAqcVvHsnVEJfid
+  8cJk6M0T+UDJRlbfI1qNGWdlK2uSsY1rQhpyRnp3cNr79aXMyQVXWyMWSiHWlDsS
+  MXvwgof7fsbChqEZ3bq7Da7pURNj0kH8dY/1hN+iP6K1cvZ32DN1MLyhY9Bqr8zL
+  ovQENDoWRjMchxwBYZxO8QKBgDany3nEm3+cbEzmg/3bup7MdKFQjnMof15ZatvG
+  VgFDe2/UYTvP+a0TM8WE9/kMCT1VlnF4vVDtLZOlBj5iyixxd8gI2jqcp42l8Pyh
+  y0IkQ+pxg+c5XdGYo3+nWMHVOg2DWCiN+DCYctd2rXDQJaLsrpWLy8PBC4ruBa2o
+  O1LLAoGAMD9wvC6D6HKQljTGlhqWm9gN5hWjAvEMQgA+5B9GDCm/XCHp1xTTTqxp
+  jQ3CERufrTFO/mfkBf7+t6LraLuEgOWGBCsvjRmHuDqzqC84jvnQnDsZ1TqbxT9H
+  ImcxPNqmOOsk3/DRujaqoLBUK7z6sB4Rm+YSZTxfA0KhAwtHsPY=
+  -----END RSA PRIVATE KEY-----
+cinekid::public_key: AAAAB3NzaC1yc2EAAAADAQABAAABAQC81mIMYjbU/pLUrwfAOTHzQPt//tEu5Ijqu7NQiUrphwTu50yUTdvKtBkuS/N6FHOGBNZeepjUGRxvCb+IYclmoP+XGU/Y40JkLwuriXTQk8CJTyqreKOgR/EPPoO/Y3bOw+OVNYUeIW09x/wKy5cZEUnSb+R87+gNC/oZPyOGnL96XrsceZlLFz/kWTf3OPwig/0ID9ObAJkke49uKgLM5RSJpZr45tg8RhD+hshD8JpibddNYSs6JQ92kkuQAogLLwCP0E7DWmdgvyKcF62/kZLRX0C1L6CTW7Nkfhb3Hl88j3x7smrObZvahP1n2vgNoxyHZUZQFofzyttI57of
 
 # message on the smb server
 samba::server::server_string: CineKid Encode Server

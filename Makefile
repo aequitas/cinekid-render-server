@@ -7,6 +7,9 @@ gem=/usr/bin/gem
 bundle=$(BIN)/bundle
 librarian-puppet=$(BIN)/librarian-puppet
 puppet=$(BIN)/puppet
+pytest=$(WORKON_HOME)/cinekid/bin/py.test
+
+WORKON_HOME ?= $(TMPDIR)
 
 .PHONY: apply bootstrap
 
@@ -17,8 +20,12 @@ Puppetfile.lock: Puppetfile | $(librarian-puppet)
 	# update puppet module dependencies
 	$(librarian-puppet) install
 
+.initial_apt.$(shell hostname):
+	sudo apt-get update
+	touch $@
+
 # apply puppet configuration
-apply: Puppetfile.lock | $(puppet)
+apply: Puppetfile.lock .initial_apt.$(shell hostname)| $(puppet)
 	# apply configuration
 	sudo -E $(puppet) apply --verbose \
 	  --modulepath=modules:vendor/modules \
@@ -80,8 +87,8 @@ fill_incoming:
 	cat cinekid2015sourcevideos/test.mp4 | sudo -u cinekid tee "/srv/cinekid/samba/Test/10/$(testfile)" >/dev/null
 
 .PHONY: test
-test:
-	python3 -m py.test --doctest-modules src/
+test: test/.requirements.txt | $(pytest)
+	$(pytest) --doctest-modules src/
 
 integration-test:
 	# test guest login on samba
@@ -104,3 +111,10 @@ integration-test:
 	umount /Volumes/Cinekid
 
 	@echo -- All good --
+
+$(pytest):
+	virtualenv --python python3 $(WORKON_HOME)/cinekid
+
+test/.requirements.txt: test/requirements.txt
+	$(WORKON_HOME)/cinekid/bin/pip install -r test/requirements.txt
+	touch $@

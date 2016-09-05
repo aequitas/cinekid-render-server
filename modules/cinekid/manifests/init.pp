@@ -15,7 +15,7 @@ class cinekid (
   # install required packages
   package { ['libav-tools', 'rsync', 'python3-pip']:
   } ->
-  package { ['colorlog', 'simplejson']:
+  package { ['colorlog', 'json']:
     provider => 'pip3',
   }
 

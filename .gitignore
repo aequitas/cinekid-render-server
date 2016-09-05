@@ -5,4 +5,8 @@
 .bundle
 .rubydev
 *.lock
+.initial_apt.*
 vendor/modules
+test/.requirements.txt
+.cache/
+__pycache__

@@ -16,7 +16,7 @@ import subprocess
 import time
 from collections import defaultdict
 
-import simplejson
+import json
 from colorlog import ColoredFormatter
 
 log = logging.getLogger(__name__)
@@ -133,7 +133,7 @@ def start_render(file_name, render_mapping):
     process = subprocess.Popen([render_cmd] + args, preexec_fn=os.setpgrp)
 
     with open(lock_file, 'w') as f:
-        f.write(simplejson.dumps({
+        f.write(json.dumps({
             'pid': process.pid,
             'uuid': uuid
         }))
@@ -148,7 +148,7 @@ def lockfiles_by_host(lockfiles):
         try:
             with open(lockfile_path, 'r') as f:
                 try:
-                    lockdata = simplejson.loads(f.read())
+                    lockdata = json.loads(f.read())
                     assert lockdata['uuid']
                     assert lockdata['pid']
                     lockdata['filename'] = lockfile
@@ -206,7 +206,7 @@ def main():
     try:
         if os.path.exists(render_mapping_file):
             with open(render_mapping_file) as f:
-                render_mapping.update(simplejson.loads(f.read(), strict=False))
+                render_mapping.update(json.loads(f.read(), strict=False))
             log.warning('loaded render mapping override from file: %s', render_mapping_file)
     except:
         log.exception('failed to load render mapping from file: %s', render_mapping_file)
