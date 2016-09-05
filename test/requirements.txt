@@ -1,2 +1,4 @@
 colorlog
 pytest
+pylama
+autopep8

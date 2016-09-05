@@ -17,9 +17,24 @@ Run the following command to bootstrap/install:
 
 To reapply changes after the repository has been updated run these commands:
 
-   cd cinekid
-   git pull
-   make
+    cd cinekid
+    git pull
+    make
+
+# Testing
+This project is provided with a test suite to validate code quality and functionality.
+
+To run quality check and unit tests:
+
+    make check test
+
+To verify funtionality after installation run:
+
+    make integration-test
+
+The following command will test the integrity of this project for development:
+
+    make check test && vagrant destroy -f && vagrant up && make integration-test
 
 # Directory structure
 

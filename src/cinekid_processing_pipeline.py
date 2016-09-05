@@ -11,7 +11,6 @@ import os
 import platform
 import random
 import re
-import socket
 import subprocess
 import time
 from collections import defaultdict
@@ -73,6 +72,7 @@ except:
     uuid = platform.node()
 cores = multiprocessing.cpu_count()
 
+
 def find(path):
     """Return files in path recursively, including directory name.
 
@@ -80,8 +80,9 @@ def find(path):
     ['test/samba/Test/file1.mp4', 'test/samba/Test/file2.mp4']
     """
     return [os.path.join(dp, f).replace(path + '/', '')
-        for dp, dn, fn in os.walk(path)
+            for dp, dn, fn in os.walk(path)
             for f in fn if process_file_ext.match(f)]
+
 
 def replace_ext(file_name, ext):
     """If ext is provided replace the file name extension with ext.
@@ -92,6 +93,7 @@ def replace_ext(file_name, ext):
         return file_name
 
     return ".".join([file_name.rsplit('.', 1)[0], ext])
+
 
 def start_render(file_name, render_mapping):
     """Start background render process for file."""
@@ -109,7 +111,7 @@ def start_render(file_name, render_mapping):
     renderer, out_ext = renderer
 
     log.info('looking up renderer for work: %s, %s: %s, extension change: %s',
-        work_name, extension, renderer, out_ext)
+             work_name, extension, renderer, out_ext)
 
     # replace extension for out files if configured so
     if out_ext:
@@ -139,6 +141,7 @@ def start_render(file_name, render_mapping):
         }))
     return process.pid
 
+
 def lockfiles_by_host(lockfiles):
     host_lockfiles = defaultdict(list)
 
@@ -162,6 +165,7 @@ def lockfiles_by_host(lockfiles):
 
     return host_lockfiles
 
+
 def clean_render_files(lockfiles):
     """Remove lockfiles for processes that are no longer running."""
 
@@ -176,6 +180,7 @@ def clean_render_files(lockfiles):
             log.warning('process for lockfile %s, no longer running, removing %s', lockfile, lockfile_path)
             os.remove(lockfile_path)
 
+
 def filter_ready(files, root=''):
     """Return only files which haven't been touched for a while."""
     now = int(time.time())
@@ -185,6 +190,7 @@ def filter_ready(files, root=''):
         age = now - mtime
         if age > ready_age:
             yield f
+
 
 def remove_done_and_rendering(ready_files, done_files, rendering_files):
     """Accept list of files ready for processing, remove file which are done or rendering."""
@@ -198,6 +204,7 @@ def remove_done_and_rendering(ready_files, done_files, rendering_files):
             continue
 
         yield f
+
 
 def main():
     log.info('this host id: %s', uuid)
@@ -231,12 +238,11 @@ def main():
     else:
         log.info('nothing rendering at the moment')
 
-
     # determine files which need rendering
     render_files = list(remove_done_and_rendering(ready_files, done_files, rendering_files))
 
     log.info('file stats; samba: %s, ready: %s, need render: %s, rendering: %s, done: %s',
-        len(samba_files), len(ready_files), len(render_files), len(rendering_files), len(done_files))
+             len(samba_files), len(ready_files), len(render_files), len(rendering_files), len(done_files))
 
     # randomize list to try and prevent failing files holding up the line
     random.shuffle(render_files)

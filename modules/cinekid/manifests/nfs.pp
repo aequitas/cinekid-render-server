@@ -1,9 +1,10 @@
+# install nfs server for sharing rendering files among render servers
 class cinekid::nfs (
     $primary_server=undef,
     $secondary_servers=[],
 ){
     # for primary server configure nfs exports, for others configure mounts
-    if $primary {
+    if $::primary {
         include nfs::server
         $clients = join(suffix($secondary_servers, '/32(rw,insecure,async,no_root_squash)'), ' ')
 

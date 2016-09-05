@@ -6,10 +6,10 @@ in_file=$4
 # generate logfile name and output before redirecting
 now=$(date +%s)
 logfile=${base}/logs/${in_file//[^0-9a-zA-Z]/_}.${now}.log
-echo "logging to: ${logfile}" 1>&2
+echo "logging to: $logfile" 1>&2
 
 # redirect output log logfile
-exec > ${logfile} 2>&1
+exec > "$logfile" 2>&1
 
 # fail on first error, print executing command and interpretation of command
 set -vex
@@ -25,14 +25,14 @@ in_file=$3
 tmp=$4
 out=$5
 
-injpg=$(echo ${in_file}|sed -E 's/\.....?$/'.jpg/)
-tmpjpg=$(echo ${tmp}|sed -E 's/\.....?$/'.jpg/)
-jpg=$(echo ${out}|sed -E 's/\.....?$/'.jpg/)
+injpg=$(echo "$in_file"|sed -E 's/\.....?$/'.jpg/)
+tmpjpg=$(echo "$tmp"|sed -E 's/\.....?$/'.jpg/)
+jpg=$(echo "$out"|sed -E 's/\.....?$/'.jpg/)
 
 echo "starting conversion"
 
 # start specified renderer with remaining args
-${base}/renderers/cinekid_render_${renderer}.sh "$1" "$2" "$3" "$4" "$5" "${injpg}" "${tmpjpg}"
+"${base}/renderers/cinekid_render_${renderer}.sh" "$1" "$2" "$3" "$4" "$5" "${injpg}" "${tmpjpg}"
 
 # check if tmp output file has been created
 test -f "${tmp}"

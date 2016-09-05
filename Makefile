@@ -11,6 +11,8 @@ bundle=$(BIN)/bundle
 librarian-puppet=$(BIN)/librarian-puppet
 puppet=$(BIN)/puppet
 pytest=$(VIRTUALENV)/bin/py.test
+pylama=$(VIRTUALENV)/bin/pylama
+autopep8 = $(VIRTUALENV)/bin/autopep8
 
 .PHONY: apply bootstrap
 
@@ -21,12 +23,12 @@ Puppetfile.lock: Puppetfile | $(librarian-puppet)
 	# update puppet module dependencies
 	$(librarian-puppet) install
 
-.initial_apt.$(shell hostname):
+/var/run/.initial_apt:
 	sudo apt-get update
 	touch $@
 
 # apply puppet configuration
-apply: Puppetfile.lock .initial_apt.$(shell hostname)| $(puppet)
+apply: Puppetfile.lock /var/run/.initial_apt| $(puppet)
 	# apply configuration
 	sudo -E $(puppet) apply --verbose \
 	  --modulepath=modules:vendor/modules \
@@ -87,7 +89,23 @@ empty_pipeline:
 fill_incoming:
 	cat cinekid2015sourcevideos/test.mp4 | sudo -u cinekid tee "/srv/cinekid/samba/test/10/$(testfile)" >/dev/null
 
-.PHONY: test
+.PHONY: fix check test integration-test
+fix: $(autopep8)
+	# fix simple python style issues
+	$(autopep8) --in-place --recursive --max-line-length 120 src
+	# fix simple puppet linting errors
+	puppet-lint --fix manifests
+	puppet-lint --fix modules
+
+check: $(pylama)
+	# validate python
+	$(pylama) src/
+	# validate puppet
+	puppet-lint manifests
+	puppet-lint modules
+	# validate shell scripts
+	shellcheck scripts/*.sh src/*.sh
+
 test: $(VIRTUALENV)/.requirements.txt | $(pytest)
 	$(pytest) --doctest-modules src/
 
@@ -113,9 +131,12 @@ integration-test:
 
 	@echo -- All good --
 
-$(pytest):
-	virtualenv --python python3 $(VIRTUALENV)
+# tools
 
-$(VIRTUALENV)/.requirements.txt: test/requirements.txt
+$(autopep8) $(pytest) $(pylama): $(VIRTUALENV)/.requirements.txt
+$(VIRTUALENV)/.requirements.txt: test/requirements.txt | $(VIRTUALENV)
 	$(VIRTUALENV)/bin/pip install -r test/requirements.txt
 	touch $@
+
+$(VIRTUALENV):
+	virtualenv --python python3 $(VIRTUALENV)

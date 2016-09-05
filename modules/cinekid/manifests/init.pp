@@ -1,3 +1,4 @@
+# install and configure cinekid render engine
 class cinekid (
   $user = undef,
   $web_user = undef,
@@ -37,7 +38,7 @@ class cinekid (
   }
 
   file { "/home/${user}/.ssh/config":
-    content => "StrictHostKeyChecking no"
+    content => 'StrictHostKeyChecking no'
   }
 
   # install private key for rsync
@@ -47,25 +48,25 @@ class cinekid (
   }
 
   # install scripts
-  file { "/usr/local/bin/cinekid_processing_pipeline.py":
+  file { '/usr/local/bin/cinekid_processing_pipeline.py':
     source => 'puppet:///modules/cinekid/src/cinekid_processing_pipeline.py',
     mode   => '0755',
   }
 
   # create processing pipeline daemon script
-  file { "/etc/init/cinekid_processing_pipeline.conf":
+  file { '/etc/init/cinekid_processing_pipeline.conf':
     content => template('cinekid/cinekid_processing_pipeline.conf'),
   } ~>
   service { 'cinekid_processing_pipeline':
     ensure => running,
     enable => true,
   }
-  File["/usr/local/bin/cinekid_processing_pipeline.py"] ~>
+  File['/usr/local/bin/cinekid_processing_pipeline.py'] ~>
   Service['cinekid_processing_pipeline']
 
   # only run rsync on primary server
-  $rsync_ensure = $primary ? { true => running, false => stopped }
-  file { "/etc/init/cinekid_rsync.conf":
+  $rsync_ensure = $::primary ? { true => running, false => stopped }
+  file { '/etc/init/cinekid_rsync.conf':
     content => template('cinekid/cinekid_rsync.conf'),
   } ~>
   service { 'cinekid_rsync':
@@ -74,7 +75,7 @@ class cinekid (
   }
 
   # create base directories (on primary server only)
-  if $primary {
+  if $::primary {
       $root = '/srv/cinekid/'
 
       file { $root:
@@ -94,23 +95,23 @@ class cinekid (
       }
 
       # install scripts
-      file { "/srv/cinekid/renderers/cinekid_render.sh":
+      file { '/srv/cinekid/renderers/cinekid_render.sh':
         source => 'puppet:///modules/cinekid/src/cinekid_render.sh',
         mode   => '0755',
       }
-      file { "/srv/cinekid/renderers/cinekid_render_test.sh":
+      file { '/srv/cinekid/renderers/cinekid_render_test.sh':
         source => 'puppet:///modules/cinekid/src/cinekid_render_test.sh',
         mode   => '0755',
       }
-      file { "/srv/cinekid/renderers/cinekid_render_noop.sh":
+      file { '/srv/cinekid/renderers/cinekid_render_noop.sh':
         source => 'puppet:///modules/cinekid/src/cinekid_render_noop.sh',
         mode   => '0755',
       }
-      file { "/srv/cinekid/renderers/cinekid_render_default.sh":
+      file { '/srv/cinekid/renderers/cinekid_render_default.sh':
         source => 'puppet:///modules/cinekid/src/cinekid_render_default.sh',
         mode   => '0755',
       }
-      file { "/srv/cinekid/renderers/cinekid_render_webm.sh":
+      file { '/srv/cinekid/renderers/cinekid_render_webm.sh':
         source => 'puppet:///modules/cinekid/src/cinekid_render_webm.sh',
         mode   => '0755',
       }
@@ -138,26 +139,5 @@ class cinekid (
         works => $works,
         days  => $days,
       }
-
-  }
-}
-
-define dir ($works, $days){
-  $_works = prefix(suffix($works,'/'), $name)
-  file { $name:
-    ensure => directory
-  }
-  file { $_works:
-    ensure => directory;
-  }
-  day{ $_works:
-    days => $days,
-  }
-}
-
-define day ($days){
-  $_days = prefix(suffix($days,'/'), $name)
-  file { $_days:
-    ensure => directory,
   }
 }
