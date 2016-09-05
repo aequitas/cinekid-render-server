@@ -3,13 +3,14 @@ SHELL=/bin/bash
 export GEM_HOME=.gem
 BIN=$(GEM_HOME)/bin
 
+WORKON_HOME ?= $(TMPDIR)
+VIRTUALENV = $(WORKON_HOME)/cinekid
+
 gem=/usr/bin/gem
 bundle=$(BIN)/bundle
 librarian-puppet=$(BIN)/librarian-puppet
 puppet=$(BIN)/puppet
-pytest=$(WORKON_HOME)/cinekid/bin/py.test
-
-WORKON_HOME ?= $(TMPDIR)
+pytest=$(VIRTUALENV)/bin/py.test
 
 .PHONY: apply bootstrap
 
@@ -55,7 +56,7 @@ $(gem):
 # cleaning and maintenance
 
 mrproper:
-	rm -rf vendor/modules/* *.lock .gem .bundle
+	rm -rf vendor/modules/* *.lock .gem .bundle $(VIRTUALENV) .initial_apt.*
 
 # status
 
@@ -78,16 +79,16 @@ dev:
 	sudo chmod a+x /usr/local/bin/*
 
 ts = $(shell date +%s)
-testfile = test 12341234 $(ts).mp4
+testfile = test 12341234 $(ts).m4v
 
 empty_pipeline:
 	sudo find /srv/cinekid/{render_locks,done,logs,tmp}/ -type f -delete
 
 fill_incoming:
-	cat cinekid2015sourcevideos/test.mp4 | sudo -u cinekid tee "/srv/cinekid/samba/Test/10/$(testfile)" >/dev/null
+	cat cinekid2015sourcevideos/test.mp4 | sudo -u cinekid tee "/srv/cinekid/samba/test/10/$(testfile)" >/dev/null
 
 .PHONY: test
-test: test/.requirements.txt | $(pytest)
+test: $(VIRTUALENV)/.requirements.txt | $(pytest)
 	$(pytest) --doctest-modules src/
 
 integration-test:
@@ -100,11 +101,11 @@ integration-test:
 	mount_smbfs //guest@192.168.42.2/Cinekid /Volumes/Cinekid
 
 	# copy test video
-	cp "cinekid2015sourcevideos/test.mp4" "/Volumes/Cinekid/Test/10/$(testfile)"
+	cp "cinekid2015sourcevideos/test.mp4" "/Volumes/Cinekid/test/10/$(testfile)"
 
 	# test if file is rendered
 	while sleep 5; do \
-		vagrant ssh encode-server-1 -- 'test -f "/srv/cinekid/done/Test/10/$(testfile)"' && break; \
+		vagrant ssh encode-server-1 -- 'test -f "/srv/cinekid/done/test/10/$(testfile)"' && break; \
 	done
 
 	# cleanup
@@ -113,8 +114,8 @@ integration-test:
 	@echo -- All good --
 
 $(pytest):
-	virtualenv --python python3 $(WORKON_HOME)/cinekid
+	virtualenv --python python3 $(VIRTUALENV)
 
-test/.requirements.txt: test/requirements.txt
-	$(WORKON_HOME)/cinekid/bin/pip install -r test/requirements.txt
+$(VIRTUALENV)/.requirements.txt: test/requirements.txt
+	$(VIRTUALENV)/bin/pip install -r test/requirements.txt
 	touch $@
