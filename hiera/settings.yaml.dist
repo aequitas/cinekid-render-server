@@ -27,8 +27,8 @@
 # cinekid::day_stop: 20
 #
 # # user and ssh key for webserver sftp sync
-# cinekid::web_user: ***REMOVED***
-# cinekid::web_host: ***REMOVED***
+# cinekid::web_user: user
+# cinekid::web_host: host
 # cinekid::web_target: results
 #
 # cinekid::private_key:

@@ -6,6 +6,7 @@
   :datadir: hiera
 
 :hierarchy:
+  - secrets
   - "%{::hostname}"
   - settings
   - common
