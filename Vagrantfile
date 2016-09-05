@@ -16,22 +16,6 @@ Vagrant.configure(2) do |config|
     config.vm.network "private_network", ip: "192.168.42.10"
   end
 
+  config.vm.provision "shell", keep_color: true, inline: 'echo "cd /vagrant; export WORKSPACE=/tmp; export PATH=/vagrant/scripts:$PATH; export WORKON_HOME=/tmp" >> /home/vagrant/.bashrc;'
   config.vm.provision "shell", keep_color: true, inline: "/usr/bin/make -C /vagrant"
-
-#  # install puppet
-#  config.vm.provision "shell", keep_color: true, path: "scripts/bootstrap.sh"
-#
-#  # run provisioning with puppet
-#  config.vm.provision "puppet" do |puppet|
-#    puppet.manifests_path = "manifests"
-#    puppet.manifest_file = "site.pp"
-#
-#    puppet.module_path = ["modules", "vendor/modules"]
-#
-#    puppet.hiera_config_path = "hiera.yaml"
-#    puppet.working_directory = "/vagrant"
-#
-#    puppet.options = "--verbose"
-#  end
-
 end
