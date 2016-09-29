@@ -13,8 +13,11 @@ class cinekid (
   $day_start=10,
   $day_stop=20,
 ){
+  apt::ppa { 'ppa:heyarje/libav-11': }
+
   # install required packages
   package { ['libav-tools', 'rsync', 'python3-pip']:
+    ensure => latest,
   } ->
   package { ['colorlog']:
     provider => 'pip3',

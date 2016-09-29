@@ -6,10 +6,15 @@ in_file=$4
 # generate logfile name and output before redirecting
 now=$(date +%s)
 logfile=${base}/logs/${in_file//[^0-9a-zA-Z]/_}.${now}.log
-echo "logging to: $logfile" 1>&2
-
+echo "$in_file: logging to: $logfile" 1>&2
 # redirect output log logfile
+exec 3>&2
 exec > "$logfile" 2>&1
+
+function finish {
+  echo "$in_file: log last line: $(tail -n6 "$logfile"|head -n1)" 1>&3
+}
+trap finish EXIT
 
 # fail on first error, print executing command and interpretation of command
 set -vex

@@ -7,6 +7,7 @@ WORKON_HOME ?= $(TMPDIR)
 VIRTUALENV = $(WORKON_HOME)/cinekid
 
 gem=/usr/bin/gem
+git=/usr/bin/git
 bundle=$(BIN)/bundle
 librarian-puppet=$(BIN)/librarian-puppet
 puppet=$(BIN)/puppet
@@ -19,13 +20,13 @@ autopep8 = $(VIRTUALENV)/bin/autopep8
 all: apply
 
 # install puppet modules
-Puppetfile.lock: Puppetfile | $(librarian-puppet)
+Puppetfile.lock: Puppetfile | $(librarian-puppet) $(git)
 	# update puppet module dependencies
 	$(librarian-puppet) install
 
 /var/run/.initial_apt:
 	sudo apt-get update
-	touch $@
+	sudo touch $@
 
 # apply puppet configuration
 apply: Puppetfile.lock /var/run/.initial_apt| $(puppet)
@@ -55,6 +56,9 @@ $(bundle): $(gem)
 $(gem):
 	sudo apt-get install -yqq ruby ruby1.9.1-dev
 
+$(git): /var/run/.initial_apt
+	sudo apt-get install -yqq git
+
 # cleaning and maintenance
 
 mrproper:
@@ -77,6 +81,9 @@ status_pipeline:
 status_rsync:
 	sudo tail -f /var/log/upstart/cinekid_rsync.log
 
+tail_logs:
+	sudo tail -n1 /srv/cinekid/logs/*
+
 # testing
 
 dev:
@@ -89,8 +96,14 @@ testfile = test 12341234 $(ts).m4v
 empty_pipeline:
 	sudo find /srv/cinekid/{render_locks,done,logs,tmp}/ -type f -delete
 
+empty_incoming:
+	sudo find /srv/cinekid/samba/ -type f -delete
+
 fill_incoming:
 	cat cinekid2015sourcevideos/test.mp4 | sudo -u cinekid tee "/srv/cinekid/samba/test/10/$(testfile)" >/dev/null
+
+fill_source:
+	sudo -u cinekid cp -v cinekid*sourcevideos/* /srv/cinekid/samba/test/20/
 
 .PHONY: fix check test integration-test
 fix: $(autopep8)

@@ -241,8 +241,10 @@ def main():
     # determine files which need rendering
     render_files = list(remove_done_and_rendering(ready_files, done_files, rendering_files))
 
-    log.info('file stats; samba: %s, ready: %s, need render: %s, rendering: %s, done: %s',
+    log.info('file stats; incoming: %s, ready: %s, need render: %s, rendering: %s, done: %s',
              len(samba_files), len(ready_files), len(render_files), len(rendering_files), len(done_files))
+    load = os.getloadavg()[0]
+    log.info('system status; load: %s, cpus: %s' % (load, cores))
 
     # randomize list to try and prevent failing files holding up the line
     random.shuffle(render_files)
@@ -254,7 +256,10 @@ def main():
         log.info('started render processes with pids: %s', pids)
     else:
         if available_slots:
-            log.info('no files need rendering')
+            if samba_files:
+              log.info('waiting for writes on incoming files to stop')
+            else:
+              log.info('no files to render')
         else:
             log.info('render slots full, not starting new renders')
 
