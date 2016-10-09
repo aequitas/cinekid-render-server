@@ -14,19 +14,16 @@ cinekid::nfs::secondary_servers:
 
 # works folders that need to be created
 cinekid::works:
-   - superchef
-   - plasticmonstertjes
-   - filmspel
-   - vrstereobril
-   - vrmetropolis
-   - videomapping
-   - quirkbot-touchboard
-   - ebotrack
-   - test
+  - verhalentafel
+  - animatieplaats
+  - hologram
+  - storymaker
+  - watals
+  - test
 
 # range of day that need to be created in works folders
 cinekid::day_start: 10
-cinekid::day_stop: 20
+cinekid::day_stop: 22
 
 # user and ssh key for webserver sftp sync
 cinekid::web_user: cinekid
