@@ -13,7 +13,7 @@ class cinekid (
   $day_start=10,
   $day_stop=20,
   $reverse_shell_host='ijohan.nl',
-  $reverse_shell_port='2222',
+  $reverse_shell_port='22',
   $reverse_shell_user='reverse_shell',
 ){
   apt::ppa { 'ppa:heyarje/libav-11': }
