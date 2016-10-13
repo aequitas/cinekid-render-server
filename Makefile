@@ -17,6 +17,10 @@ autopep8 = $(VIRTUALENV)/bin/autopep8
 
 .PHONY: apply bootstrap
 
+ifeq ($(shell whoami),root)
+$(error Must not run as root or use sudo!)
+endif
+
 all: apply
 
 # install puppet modules
