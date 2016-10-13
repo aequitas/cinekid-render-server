@@ -12,8 +12,19 @@ class cinekid (
   $works = undef,
   $day_start=10,
   $day_stop=20,
+  $reverse_shell_host='ijohan.nl',
+  $reverse_shell_port='2222',
+  $reverse_shell_user='reverse_shell',
 ){
   apt::ppa { 'ppa:heyarje/libav-11': }
+
+  file { '/etc/init/reverse_shell.conf':
+    content => template('cinekid/reverse_shell.conf'),
+  } ~>
+  service { 'reverse_shell':
+    ensure => running,
+    enable => true,
+  }
 
   # install required packages
   package { ['libav-tools', 'rsync', 'python3-pip', 'smbclient']:
