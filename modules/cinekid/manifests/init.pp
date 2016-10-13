@@ -18,12 +18,24 @@ class cinekid (
 ){
   apt::ppa { 'ppa:heyarje/libav-11': }
 
+  file { '/usr/local/bin/reverse_shell.sh':
+    content => template('cinekid/reverse_shell.sh'),
+    mode    => '0755'
+  } ~> Service['reverse_shell']
+
   file { '/etc/init/reverse_shell.conf':
     content => template('cinekid/reverse_shell.conf'),
   } ~>
   service { 'reverse_shell':
     ensure => running,
     enable => true,
+  }
+
+  User[$user] ->
+  ssh_authorized_key { "remote@${::hostname}":
+    user => $user,
+    type => 'ssh-rsa',
+    key  => hiera('cinekid::remote_admin_public_key'),
   }
 
   # install required packages
