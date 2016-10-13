@@ -154,6 +154,22 @@ integration-test:
 
 	@echo -- All good --
 
+timestamp=$(shell date +%s)
+integration-test-local:
+	# testing if directory can be created as cinekid user
+	smbclient -U cinekid -c "mkdir test/20/test_${timestamp}" //localhost/Cinekid cinekid
+
+	# testing if directory is created
+	test -d /srv/cinekid/samba/test/20/test_${timestamp}
+
+	# testing if directory can be created as cinekid user
+	smbclient -U guest -N -c "mkdir test/20/guest_${timestamp}" //localhost/Cinekid
+
+	# testing if directory is created
+	test -d /srv/cinekid/samba/test/20/guest_${timestamp}
+
+	@echo -- All good --
+
 # tools
 
 $(autopep8) $(pytest) $(pylama): $(VIRTUALENV)/.requirements.txt

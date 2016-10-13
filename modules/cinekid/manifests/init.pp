@@ -16,7 +16,7 @@ class cinekid (
   apt::ppa { 'ppa:heyarje/libav-11': }
 
   # install required packages
-  package { ['libav-tools', 'rsync', 'python3-pip']:
+  package { ['libav-tools', 'rsync', 'python3-pip', 'smbclient']:
     ensure => latest,
   } ->
   package { ['colorlog']:
