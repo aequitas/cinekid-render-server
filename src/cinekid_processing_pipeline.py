@@ -219,7 +219,7 @@ def main():
     except:
         log.exception('failed to load render mapping from file: %s', render_mapping_file)
     log.info('render mapping: %s', render_mapping)
-    log.info('scanning files extensions:', extensions)
+    log.info('scanning files extensions: %s', extensions)
 
     # get current state from filesystem
     samba_files = find(samba_dir)
