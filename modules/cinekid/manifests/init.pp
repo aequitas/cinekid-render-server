@@ -46,6 +46,12 @@ class cinekid (
     provider => 'pip3',
   }
 
+  Package['openssh-server'] ->
+  service { 'ssh':
+    ensure => running,
+    enable => true,
+  }
+
   # create required user and group
   group { $user:
     ensure => present,
