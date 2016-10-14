@@ -108,7 +108,9 @@ dev:
 	sudo chmod a+x /usr/local/bin/*
 
 ts = $(shell date +%s)
-testfile = test 12341234 $(ts).m4v
+idcode = 00000
+testfile = test 12341234 $(ts)_$(idcode).m4v
+testfile_url = test%2012341234%20$(ts)_$(idcode).m4v
 
 empty_pipeline:
 	sudo find /srv/cinekid/{render_locks,done,logs,tmp}/ -type f -delete
@@ -170,6 +172,24 @@ integration-test:
 	# cleanup
 	umount /Volumes/Cinekid
 
+	@echo -- All good --
+
+integration-test-live:
+	# test if movie file can be uploaded from client computers as guest
+	smbclient -U guest -N -c "put cinekid2015sourcevideos/test.mp4 \"test/20/$(testfile)\"" //localhost/Cinekid
+	
+	# wait for file to be rendered (this can take a while ~2 minutes, abort with ctrl-c)
+	while sleep 5; do \
+		test -f "/srv/cinekid/done/test/20/$(testfile)" && break; \
+		test -f "/srv/cinekid/done/test/20/$(subst m4v,jpg,$(testfile))" && break; \
+	done
+
+	# test if movie and thumbnail have been uploaded (this can take a while ~ 2 minutes, abort with ctrl-c)
+	while sleep 5; do \
+		curl -s -I --fail "http://mijnwerk.cinekid.nl/results/test/20/$(testfile_url)" && break; \
+		curl -s -I --fail "http://mijnwerk.cinekid.nl/results/test/20/$(subst m4v,jpg,$(testfile_url))" && break; \
+	done
+ 
 	@echo -- All good --
 
 timestamp=$(shell date +%s)
