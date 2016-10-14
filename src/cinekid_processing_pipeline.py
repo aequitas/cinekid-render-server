@@ -215,6 +215,7 @@ def main():
             with open(render_mapping_file) as f:
                 render_mapping.update(json.loads(f.read(), strict=False))
             log.warning('loaded render mapping override from file: %s', render_mapping_file)
+            log.info('render mapping: %s', render_mapping)
     except:
         log.exception('failed to load render mapping from file: %s', render_mapping_file)
     log.debug('render mapping: %s', render_mapping)
