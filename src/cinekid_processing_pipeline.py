@@ -33,6 +33,7 @@ render_mapping = {
     'default': ('default', 'm4v'),
     # do nothing with apk files
     'apk': ('noop', None),
+    'png': ('png', None),
     # 'default': ['webm', 'webm'],
     # 'default': ('test', None),
     # '': ('noop', None),
@@ -219,7 +220,7 @@ def main():
     except:
         log.exception('failed to load render mapping from file: %s', render_mapping_file)
     log.info('render mapping: %s', render_mapping)
-    log.info('scanning files extensions: %s', extensions)
+    log.info('scanning files extensions: %sg', extensions)
 
     # get current state from filesystem
     samba_files = find(samba_dir)

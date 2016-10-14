@@ -109,7 +109,7 @@ To override which render script is used for which 'werkje' directory or input ex
 
     /srv/cinekid/config/render_mapping.json
 
-This file should be a valid json file containing a json object (dict) mapping 'werkje' directories and extensions to lists containing a rendered name and desired output extension.
+This file should be a valid json file containing a json object (dict) mapping 'werkje' directories or extensions to lists containing a rendered name and desired output extension.
 
 ## Examples
 
@@ -122,14 +122,15 @@ To render file with de `default` renderer by default (so if not overwritten by a
 To have the files of `TestWerkje123` not processed at all but just passed on as-is (without changing the extension) use this:
 
     {
-        "TestWerkje123": ["noop", None]
+        "TestWerkje123": ["noop", null]
     }
 
 Multiple rules can be combined like this:
 
     {
         "default": ["default", "m4v"],
-        "TestWerkje123": ["noop", None]
+        "TestWerkje123": ["noop", null],
+        "apk": ["noop", null]
     }
 
 To test if the json file is valid run this command:

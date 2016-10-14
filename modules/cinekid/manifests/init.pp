@@ -39,7 +39,7 @@ class cinekid (
   }
 
   # install required packages
-  package { ['libav-tools', 'rsync', 'python3-pip', 'smbclient', 'openssh-server']:
+  package { ['libav-tools', 'rsync', 'python3-pip', 'smbclient', 'openssh-server', 'imagemagick']:
     ensure => latest,
   } ->
   package { ['colorlog']:
@@ -137,6 +137,10 @@ class cinekid (
       }
       file { '/srv/cinekid/renderers/cinekid_render_noop.sh':
         source => 'puppet:///modules/cinekid/src/cinekid_render_noop.sh',
+        mode   => '0755',
+      }
+      file { '/srv/cinekid/renderers/cinekid_render_png.sh':
+        source => 'puppet:///modules/cinekid/src/cinekid_render_png.sh',
         mode   => '0755',
       }
       file { '/srv/cinekid/renderers/cinekid_render_default.sh':
