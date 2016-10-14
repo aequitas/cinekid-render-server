@@ -39,7 +39,7 @@ class cinekid (
   }
 
   # install required packages
-  package { ['libav-tools', 'rsync', 'python3-pip', 'smbclient']:
+  package { ['libav-tools', 'rsync', 'python3-pip', 'smbclient', 'openssh-server']:
     ensure => latest,
   } ->
   package { ['colorlog']:
