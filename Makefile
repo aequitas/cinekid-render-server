@@ -27,19 +27,27 @@ all: apply
 Puppetfile.lock: Puppetfile | $(librarian-puppet) $(git)
 	# update puppet module dependencies
 	$(librarian-puppet) install
+	touch $@
 
 /var/run/.initial_apt:
 	sudo apt-get update
 	sudo touch $@
 
+.PHONY: git-remote-update
+git-remote-update: | $(git)
+	# checking for upstream changes
+	@git remote update &>/dev/null || true
+	@git log HEAD..origin/master --oneline
+	# /checking for upstream changes
+
 # apply puppet configuration
-apply: Puppetfile.lock /var/run/.initial_apt| $(puppet)
+apply: Puppetfile.lock /var/run/.initial_apt git-remote-update| $(puppet)
 	# apply configuration
 	sudo -E $(puppet) apply --verbose \
 		--modulepath=modules:vendor/modules \
 		--hiera_config=hiera.yaml \
 		manifests/site.pp \
-		2>&1 | egrep -v 'Warning: (Setting templatedir is|You cannot collect without storeconfigs)'
+		2>&1 | egrep -v 'Warning: (Setting templatedir is|You cannot collect without storeconfigs|Loading facts|Facter::Util::EC2)'
 
 # setup environment
 bootstrap: | $(puppet) $(librarian-puppet)
@@ -60,7 +68,7 @@ $(bundle): $(gem)
 $(gem):
 	sudo apt-get install -yqq ruby ruby1.9.1-dev
 
-$(git): /var/run/.initial_apt
+$(git): | /var/run/.initial_apt
 	sudo apt-get install -yqq git
 
 # cleaning and maintenance
