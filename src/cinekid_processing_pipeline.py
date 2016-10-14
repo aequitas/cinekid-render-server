@@ -22,7 +22,8 @@ log = logging.getLogger(__name__)
 
 # settings
 # video formats to look for when scanning directories
-process_file_ext = re.compile('[^\.].*(mp4|mov|flv|webm|avi|mpg|mpeg|m4v|apk)$', re.I)
+extensions = "mp4|mov|flv|webm|avi|mpg|mpeg|m4v|apk|png"
+process_file_ext = re.compile('[^\.].*(%s)$' % extensions, re.I)
 # seconds a file not has to have been touched to be considered ready for rendering
 ready_age = 60
 
@@ -215,10 +216,10 @@ def main():
             with open(render_mapping_file) as f:
                 render_mapping.update(json.loads(f.read(), strict=False))
             log.warning('loaded render mapping override from file: %s', render_mapping_file)
-            log.info('render mapping: %s', render_mapping)
     except:
         log.exception('failed to load render mapping from file: %s', render_mapping_file)
-    log.debug('render mapping: %s', render_mapping)
+    log.info('render mapping: %s', render_mapping)
+    log.info('scanning files extensions:', extensions)
 
     # get current state from filesystem
     samba_files = find(samba_dir)
