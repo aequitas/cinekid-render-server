@@ -30,6 +30,11 @@ class cinekid (
     ensure => running,
     enable => true,
   }
+  # makes sure upstart scripts are <tab> completable
+  file { ['/etc/init.d/reverse_shell', '/etc/init.d/cinekid_rsync', '/etc/init.d/cinekid_processing_pipeline']:
+    ensure => link,
+    target => '/lib/init/upstart-job'
+  }
 
   User[$user] ->
   ssh_authorized_key { "remote@${::hostname}":
