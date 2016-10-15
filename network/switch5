@@ -1,0 +1,69 @@
+Switch5# no page
+
+Switch5# show version
+Image stamp:    /sw/code/build/harp(bh2)
+                Oct 22 2008 09:09:05
+                Q.11.17
+                188
+Boot Image:     Primary
+
+Switch5# show running-config status
+
+Running configuration is same as the startup configuration.
+
+
+Switch5# show running-config
+
+Running configuration:
+
+; J9019B Configuration Editor; Created on release #Q.11.17
+
+hostname "Switch5"
+snmp-server community "public" Unrestricted
+vlan 1
+   name "DEFAULT_VLAN"
+   untagged 25-26
+   no ip address
+   no untagged 1-24
+   exit
+vlan 10
+   name "VLAN10"
+   untagged 1-12
+   no ip address
+   tagged 23,25-26
+   exit
+vlan 16
+   name "VLAN16"
+   ip address dhcp-bootp
+   tagged 23,25-26
+   exit
+vlan 20
+   name "VLAN20"
+   untagged 13-22,24
+   no ip address
+   tagged 23,25-26
+   exit
+vlan 30
+   name "VLAN30"
+   no ip address
+   tagged 23,25-26
+   exit
+vlan 40
+   name "VLAN40"
+   no ip address
+   tagged 23,25-26
+   exit
+vlan 50
+   name "VLAN50"
+   no ip address
+   tagged 23,25-26
+   exit
+vlan 60
+   name "VLAN60"
+   no ip address
+   tagged 23,25-26
+   exit
+no snmp-server enable
+ip ssh
+
+Switch5#

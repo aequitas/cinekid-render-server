@@ -1,0 +1,541 @@
+Cisco2821>enable
+Cisco2821#terminal length 0
+
+Cisco2821#show version
+Cisco IOS Software, 2800 Software (C2800NM-ADVENTERPRISEK9-M), Version 15.1(3)T2, RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2011 by Cisco Systems, Inc.
+Compiled Wed 10-Aug-11 05:17 by prod_rel_team
+
+ROM: System Bootstrap, Version 12.4(13r)T, RELEASE SOFTWARE (fc1)
+
+Cisco2821 uptime is 5 days, 17 hours, 47 minutes
+System returned to ROM by power-on
+System restarted at 15:36:12 UTC Sun Oct 9 2016
+System image file is "flash:c2800nm-adventerprisek9-mz.151-3.T2.bin"
+Last reload type: Normal Reload
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+Cisco 2821 (revision 53.51) with 507904K/16384K bytes of memory.
+Processor board ID FCZ120471FF
+9 FastEthernet interfaces
+2 Gigabit Ethernet interfaces
+1 Virtual Private Network (VPN) Module
+1 ATM/Voice AIM
+DRAM configuration is 64 bits wide with parity enabled.
+239K bytes of non-volatile configuration memory.
+254464K bytes of ATA CompactFlash (Read/Write)
+
+
+License Info:
+
+License UDI:
+
+-------------------------------------------------
+Device#	  PID			SN
+-------------------------------------------------
+*0  	  CISCO2821             FCZ120471FF
+
+
+
+Configuration register is 0x2102
+
+Cisco2821#show running-config
+Building configuration...
+
+
+Current configuration : 11764 bytes
+!
+! Last configuration change at 08:52:04 UTC Sat Oct 15 2016 by Cisco
+! NVRAM config last updated at 08:53:01 UTC Sat Oct 15 2016 by Cisco
+!
+version 15.1
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname Cisco2821
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+aaa new-model
+!
+!
+aaa authentication login default local
+aaa authentication enable default none
+!
+!
+!
+!
+!
+aaa session-id common
+!
+no network-clock-participate aim 0
+!
+dot11 syslog
+ip source-route
+!
+!
+ip cef
+!
+ip dhcp excluded-address 172.16.16.1 172.16.16.30
+ip dhcp excluded-address 172.16.20.1 172.16.20.30
+ip dhcp excluded-address 172.16.30.1 172.16.30.30
+ip dhcp excluded-address 172.16.40.1 172.16.40.30
+ip dhcp excluded-address 172.16.40.254
+ip dhcp excluded-address 172.16.50.1 172.16.50.30
+ip dhcp excluded-address 172.16.50.254
+ip dhcp excluded-address 172.16.60.1 172.16.60.30
+ip dhcp excluded-address 172.16.60.254
+ip dhcp excluded-address 172.16.16.254
+!
+ip dhcp pool VLAN10
+   import all
+   network 172.16.10.0 255.255.255.0
+   default-router 172.16.10.1
+   dns-server 172.16.10.1
+   domain-name eventnoc.nl
+!
+ip dhcp pool VLAN16
+   import all
+   network 172.16.16.0 255.255.255.0
+   default-router 172.16.16.1
+   dns-server 172.16.16.1
+   domain-name eventnoc.nl
+!
+ip dhcp pool VLAN20
+   import all
+   network 172.16.20.0 255.255.255.0
+   default-router 172.16.20.1
+   domain-name eventnoc.nl
+   dns-server 172.16.20.1
+   lease infinite
+!
+ip dhcp pool VLAN30
+   import all
+   network 172.16.30.0 255.255.255.0
+   default-router 172.16.30.1
+   domain-name eventnoc.nl
+   dns-server 172.16.30.1
+!
+ip dhcp pool VLAN40
+   import all
+   network 172.16.40.0 255.255.255.0
+   default-router 172.16.40.1
+   domain-name eventnoc.nl
+   dns-server 172.16.40.1
+!
+ip dhcp pool VLAN50
+   import all
+   network 172.16.50.0 255.255.255.0
+   default-router 172.16.50.1
+   domain-name eventnoc.nl
+   dns-server 172.16.50.1
+!
+ip dhcp pool VLAN60
+   import all
+   network 172.16.60.0 255.255.255.0
+   default-router 172.16.60.1
+   domain-name eventnoc.nl
+   dns-server 172.16.60.1
+!
+ip dhcp pool HP1
+   host 172.16.16.11 255.255.255.0
+   hardware-address 001c.2e8b.8220
+   default-router 172.16.16.1
+!
+ip dhcp pool HP2
+   host 172.16.16.12 255.255.255.0
+   hardware-address 001c.2e55.7260
+   default-router 172.16.16.1
+!
+ip dhcp pool HP3
+   host 172.16.16.13 255.255.255.0
+   hardware-address 001c.2e8a.be80
+   default-router 172.16.16.1
+!
+ip dhcp pool HP4
+   host 172.16.16.14 255.255.255.0
+   hardware-address 001c.2e8b.12a0
+   default-router 172.16.16.1
+!
+ip dhcp pool HP5
+   host 172.16.16.15 255.255.255.0
+   hardware-address 001c.2e8b.c180
+   default-router 172.16.16.1
+!
+ip dhcp pool HP6
+   host 172.16.16.16 255.255.255.0
+   hardware-address 001c.2e8a.cdc0
+   default-router 172.16.16.1
+!
+ip dhcp pool HP7
+   host 172.16.16.17 255.255.255.0
+   hardware-address 001c.2e8a.3e80
+   default-router 172.16.16.1
+!
+ip dhcp pool HP8
+   host 172.16.16.18 255.255.255.0
+   hardware-address 001c.2e8b.0220
+   default-router 172.16.16.1
+!
+ip dhcp pool HP9
+   host 172.16.16.19 255.255.255.0
+   hardware-address 001c.2e8b.f100
+   default-router 172.16.16.1
+!
+ip dhcp pool HP10
+   host 172.16.16.20 255.255.255.0
+   hardware-address 001c.2e8b.22a0
+   default-router 172.16.16.1
+!
+ip dhcp pool HP11
+   host 172.16.16.21 255.255.255.0
+   hardware-address 001c.2e8b.e180
+   default-router 172.16.16.1
+!
+ip dhcp pool HP12
+   host 172.16.16.22 255.255.255.0
+   hardware-address 001c.2e8b.6de0
+   default-router 172.16.16.1
+!
+ip dhcp pool HP13
+   host 172.16.16.23 255.255.255.0
+   hardware-address 001c.2e8b.8360
+   default-router 172.16.16.1
+!
+ip dhcp pool encoder1
+   host 172.16.20.210 255.255.255.0
+   default-router 172.16.20.1
+!
+ip dhcp pool VLAN20 lease infinite
+!
+!
+ip domain name eventnoc.nl
+ip host gw.eventnoc.nl 172.16.16.1
+ip host CISCO-LWAPP-CONTROLLER 172.16.60.2
+ip host block.eventnoc.nl 82.94.255.22
+ip host sw13.eventnoc.nl 172.16.16.23
+ip host sw11.eventnoc.nl 172.16.16.21
+ip host sw9.eventnoc.nl 172.16.16.19
+ip host sw8.eventnoc.nl 172.16.16.18
+ip host sw1.eventnoc.nl 172.16.16.11
+ip host sw10.eventnoc.nl 172.16.16.20
+ip host sw2.eventnoc.nl 172.16.16.12
+ip host sw3.eventnoc.nl 172.16.16.13
+ip host sw4.eventnoc.nl 172.16.16.14
+ip host sw5.eventnoc.nl 172.16.16.15
+ip host sw6.eventnoc.nl 172.16.16.16
+ip host sw7.eventnoc.nl 172.16.16.17
+ip host sw12.eventnoc.nl 172.16.16.22
+ip host CISCO-LWAPP-CONTROLLER.eventnoc.nl 172.16.60.2
+ip host wlc.eventnoc.nl 172.16.60.2
+ip host encoder1.eventnoc.nl 172.16.16.28
+ip host encoder2.eventnoc.nl 172.16.16.29
+ip name-server 8.8.8.8
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+
+parameter-map type urlfpolicy local blacklist-policy
+ block-page redirect-url http://www.cinekid.nl/festivalprogram/part/60
+parameter-map type urlf-glob url-whitelist
+ pattern *cinekid.nl
+ pattern *eventnoc.nl
+ pattern *unity3d.com
+ pattern *filmspel.nl
+ pattern *dewereldvanverschil.nl
+ pattern *tinkercad.com
+ pattern *minecraft.net
+ pattern *kodekraker.watnou.nl
+ pattern *kennisnet.nl
+
+parameter-map type urlf-glob url-blacklist
+ pattern spelen.nl
+
+!
+!
+!
+!
+!
+!
+!
+voice-card 0
+!
+crypto pki token default removal timeout 0
+!
+!
+!
+!
+license udi pid CISCO2821 sn FCZ120471FF
+!
+no spanning-tree vlan 1
+no spanning-tree vlan 10
+no spanning-tree vlan 16
+no spanning-tree vlan 20
+no spanning-tree vlan 30
+no spanning-tree vlan 40
+no spanning-tree vlan 50
+no spanning-tree vlan 60
+username [!!> secrets.txt]
+username [!!> secrets.txt]
+!
+redundancy
+!
+!
+!
+class-map type urlfilter match-any permitted-sites
+ match  server-domain urlf-glob url-whitelist
+class-map type urlfilter match-any blocked-sites
+ match  server-domain urlf-glob url-blacklist
+class-map type inspect match-all unfiltered-hosts
+ match protocol http
+ match access-group 90
+class-map type inspect match-any rest-traffic
+ match protocol tcp
+ match protocol udp
+ match protocol icmp
+ match protocol dns
+ match protocol ssh
+class-map type inspect match-all filtered-hosts
+ match protocol http
+ match access-group 80
+!
+!
+policy-map type inspect urlfilter urlfilter-actions
+ parameter type urlfpolicy local blacklist-policy
+ class type urlfilter permitted-sites
+  allow
+ class type urlfilter blocked-sites
+  reset
+policy-map type inspect in-in
+ class class-default
+  pass
+policy-map type inspect in-out
+ class type inspect unfiltered-hosts
+  inspect
+ class type inspect filtered-hosts
+  inspect
+  service-policy urlfilter urlfilter-actions
+ class type inspect rest-traffic
+  inspect
+ class class-default
+  drop
+policy-map type inspect out-in
+ class class-default
+  pass
+!
+zone security inside
+zone security outside
+zone-pair security in-to-out source inside destination outside
+ service-policy type inspect in-out
+zone-pair security in-to-in source inside destination inside
+ service-policy type inspect in-in
+zone-pair security out-to-in source outside destination inside
+ service-policy type inspect out-in
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 192.168.15.10 255.255.255.0
+ ip nat outside
+ ip virtual-reassembly in
+ zone-member security outside
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1/0
+ switchport mode trunk
+!
+interface FastEthernet0/1/1
+ switchport mode trunk
+!
+interface FastEthernet0/1/2
+ switchport mode trunk
+!
+interface FastEthernet0/1/3
+ switchport mode trunk
+!
+interface FastEthernet0/1/4
+ switchport access vlan 16
+!
+interface FastEthernet0/1/5
+ switchport access vlan 16
+!
+interface FastEthernet0/1/6
+ switchport access vlan 16
+!
+interface FastEthernet0/1/7
+ switchport access vlan 16
+!
+interface FastEthernet0/1/8
+ switchport access vlan 16
+!
+interface Vlan1
+ no ip address
+!
+interface Vlan10
+ ip address 172.16.10.1 255.255.255.0
+ ip access-group 110 in
+ ip nat inside
+ ip virtual-reassembly in
+ zone-member security inside
+ no autostate
+!
+interface Vlan16
+ ip address 172.16.16.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly in
+ zone-member security inside
+ no autostate
+!
+interface Vlan20
+ ip address 172.16.20.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly in
+ zone-member security inside
+ no autostate
+!
+interface Vlan30
+ ip address 172.16.30.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly in
+ zone-member security inside
+ no autostate
+!
+interface Vlan40
+ ip address 172.16.40.1 255.255.255.0
+ ip access-group 110 in
+ ip nat inside
+ ip virtual-reassembly in
+ zone-member security inside
+ no autostate
+!
+interface Vlan50
+ ip address 172.16.50.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly in
+ zone-member security inside
+ no autostate
+!
+interface Vlan60
+ ip address 172.16.60.1 255.255.255.0
+ ip virtual-reassembly in
+ zone-member security inside
+ no autostate
+!
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+!
+!
+ip dns server
+ip dns primary eventnoc.nl soa ns.eventnoc.nl hostmaster.eventnoc.nl 21600 900 1 86400
+ip nat pool POOL-VLAN10 192.168.15.15 192.168.15.15 netmask 255.255.255.0
+ip nat pool POOL-VLAN20 192.168.15.15 192.168.15.15 netmask 255.255.255.0
+ip nat pool POOL-VLAN30 192.168.15.17 192.168.15.17 netmask 255.255.255.0
+ip nat pool POOL-VLAN40 192.168.15.18 192.168.15.18 netmask 255.255.255.0
+ip nat pool POOL-VLAN50 192.168.15.19 192.168.15.19 netmask 255.255.255.0
+ip nat pool POOL-VLAN16 192.168.15.14 192.168.15.14 netmask 255.255.255.0
+ip nat inside source list 10 pool POOL-VLAN10 overload
+ip nat inside source list 16 pool POOL-VLAN16 overload
+ip nat inside source list 20 pool POOL-VLAN20 overload
+ip nat inside source list 30 pool POOL-VLAN30 overload
+ip nat inside source list 40 pool POOL-VLAN40 overload
+ip nat inside source list 50 pool POOL-VLAN50 overload
+ip nat inside source static tcp 172.16.16.1 22 192.168.15.10 31415 extendable
+ip nat inside source static tcp 172.16.20.29 22 192.168.15.10 31416 extendable
+ip nat inside source static tcp 172.16.20.30 22 192.168.15.10 31417 extendable
+ip nat inside source static tcp 172.16.20.77 22 192.168.15.10 31418 extendable
+ip route 0.0.0.0 0.0.0.0 192.168.15.1
+!
+logging esm config
+access-list 10 permit 172.16.10.0 0.0.0.255
+access-list 16 permit 172.16.16.0 0.0.0.255
+access-list 20 permit 172.16.20.0 0.0.0.255
+access-list 30 permit 172.16.30.0 0.0.0.255
+access-list 40 permit 172.16.40.0 0.0.0.255
+access-list 50 permit 172.16.50.0 0.0.0.255
+access-list 80 remark Filtered
+access-list 80 permit 172.16.10.0 0.0.0.255
+access-list 80 permit 172.16.40.0 0.0.0.255
+access-list 90 remark Unfiltered
+access-list 90 deny   172.16.16.0 0.0.0.255
+access-list 90 deny   172.16.20.0 0.0.0.255
+access-list 90 deny   172.16.30.0 0.0.0.255
+access-list 90 deny   172.16.50.0 0.0.0.255
+access-list 90 deny   172.16.60.0 0.0.0.255
+access-list 110 remark Filtered Ports
+access-list 110 deny   tcp any any eq smtp
+access-list 110 deny   tcp any any eq 443
+access-list 110 permit ip any any
+!
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+mgcp profile default
+!
+!
+!
+!
+!
+banner motd ^C
+=============================================================================
+=  This system is for the use of authorized users only.  Individuals        =
+=  Using this computer system without authority, or in excess of their      =
+=  Authority, are subject to having all of their privileges revoked on      =
+=  This system per the discretion of the Corporate Security Team.  All      =
+=  Appropriate measures will be taken to ensure the integrity of this       =
+=  System and its contents to be free from any potential security risks.    =
+=============================================================================
+^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ transport input all
+!
+scheduler allocate 20000 1000
+ntp master 2
+end

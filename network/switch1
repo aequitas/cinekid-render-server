@@ -1,0 +1,56 @@
+Switch1# no page
+Switch1# show running-config status
+
+Running configuration is same as the startup configuration.
+
+
+Switch1# show running-config
+
+Running configuration:
+
+; J9019B Configuration Editor; Created on release #Q.11.26
+
+hostname "Switch1"
+snmp-server community "public" Unrestricted
+vlan 1
+   name "DEFAULT_VLAN"
+   no ip address
+   no untagged 1-26
+   exit
+vlan 10
+   name "VLAN10"
+   untagged 3-12
+   no ip address
+   tagged 1-2,25-26
+   exit
+vlan 20
+   name "VLAN20"
+   untagged 13-24
+   no ip address
+   tagged 1-2,25-26
+   exit
+vlan 16
+   name "VLAN16"
+   ip address dhcp-bootp
+   tagged 1-2,25-26
+   exit
+vlan 30
+   name "VLAN30"
+   no ip address
+   tagged 25-26
+   exit
+vlan 40
+   name "VLAN40"
+   no ip address
+   tagged 1-2,25-26
+   exit
+vlan 50
+   name "VLAN50"
+   no ip address
+   tagged 1-2,25-26
+   exit
+vlan 60
+   name "VLAN60"
+   no ip address
+   tagged 1-2,25-26
+   exit

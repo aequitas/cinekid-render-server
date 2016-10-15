@@ -1,2 +1,2 @@
 hiera/secrets.yaml filter=git-crypt diff=git-crypt
-
+network/secrets.txt filter=git-crypt diff=git-crypt

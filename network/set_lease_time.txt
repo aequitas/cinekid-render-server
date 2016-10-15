@@ -1,0 +1,12 @@
+Cisco2821>enable
+Cisco2821#config
+Cisco2821(config)#ip dhcp pool VLAN20
+Cisco2821(dhcp-config)#lease infinite
+[ctrl-z]
+Cisco2821#show running-config
+...............
+Cisco2821#copy running-config startup-config
+Destination filename [startup-config]?
+Building configuration...
+
+[OK]
