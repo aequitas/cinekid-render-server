@@ -3,6 +3,8 @@ class cinekid::nfs (
     $primary_server=undef,
     $secondary_servers=[],
 ){
+  include nfs::client
+
     # for primary server configure nfs exports, for others configure mounts
     if $::primary {
         include nfs::server
@@ -13,8 +15,6 @@ class cinekid::nfs (
             clients => $clients,
         }
     } else {
-        include nfs::client
-
         nfs::client::mount { $cinekid::base_dir:
             server  => $primary_server,
             share   => $cinekid::base_dir,

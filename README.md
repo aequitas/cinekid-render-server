@@ -1,3 +1,5 @@
+This are application and provisioning sources to create media transcode servers.
+
 # Requirements
 
 - Ubuntu installation (tested on 14.04)
@@ -5,10 +7,10 @@
 
 # Installation
 
-Install git and pul the repository locally (you will need Gitlab credentials for the clone):
+Install git and pull the repository locally:
 
     sudo apt-get install -yqq git
-    git clone https://gitlab.com/aequitas/cinekid.git
+    git clone https://github.com/aequitas/cinekid-render-server.git
 
 Run the following command to bootstrap/install:
 
@@ -30,11 +32,41 @@ To run quality check and unit tests:
 
 To verify funtionality after installation run:
 
-    make integration-test
+    make integration-test-local
 
 The following command will test the integrity of this project for development:
 
     make check test && vagrant destroy -f && vagrant up && make integration-test
+
+# Development
+
+For local development Vagrant can be used to create virtual render servers and run tests against the provisioned configuration. Make sure vragrant is installed and run:
+
+    vagrant up
+
+This will create 3 virtual machines: master render server `encode-server-1`, slave render server `encode-server-2` and a webserver for testing uploads `test-web-server`.
+
+To login to master server and monitoring progress run:
+
+    vagrant ssh encode-server-1
+
+And once inside:
+
+    make status
+
+To run the testsuite against the virtual environment run:
+
+    make integration-test
+
+Machines can be brought up/created individually by their name:
+
+    vagrant up encode-server-1
+
+If provisioning needs to be reapplied (if it failed or configuration has changed) run:
+
+    vagrant provision encode-server-1
+
+This is equivalent of running `make` inside one of the virtual machines.
 
 # Directory structure
 

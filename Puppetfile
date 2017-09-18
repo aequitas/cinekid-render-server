@@ -8,7 +8,7 @@ forge "https://forgeapi.puppetlabs.com"
 
 # A module from the Puppet Forge
 mod 'thias-samba'
-mod 'puppetlabs-apt'
+mod 'puppetlabs-apt', '2.4.0'
 mod 'wilrnh-ffmpeg'
 mod 'echocat-nfs'
 mod 'bodepd-pip', :git => 'https://github.com/bodepd/puppet-pip.git'

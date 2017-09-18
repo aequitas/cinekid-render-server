@@ -17,7 +17,7 @@ autopep8 = $(VIRTUALENV)/bin/autopep8
 
 .PHONY: apply bootstrap
 
-ifeq ($(shell whoami),root)
+ifneq ($(shell whoami),root)
 $(error Must not run as root or use sudo!)
 endif
 
@@ -149,12 +149,12 @@ integration-test:
 	smbutil view -g //192.168.42.2 | grep Cinekid | grep Disk
 
 	# mount samba share
-	-umount /Volumes/Cinekid
-	mkdir -p /Volumes/Cinekid
-	mount_smbfs //guest@192.168.42.2/Cinekid /Volumes/Cinekid
+	-umount .tmp/Cinekid
+	mkdir -p .tmp/Cinekid
+	mount_smbfs //guest@192.168.42.2/Cinekid .tmp/Cinekid
 
 	# copy test video
-	cp "cinekid2015sourcevideos/test.mp4" "/Volumes/Cinekid/test/10/$(testfile)"
+	cp "cinekid2015sourcevideos/test.mp4" ".tmp/Cinekid/test/10/$(testfile)"
 
 	# test if file is rendered and thumbnail is generated (can take a few minutes)
 	vagrant ssh encode-server-1 -- 'timeout 300 bash -c "\
@@ -170,14 +170,14 @@ integration-test:
 		done "'
 
 	# cleanup
-	umount /Volumes/Cinekid
+	umount .tmp/Cinekid
 
 	@echo -- All good --
 
 integration-test-live:
 	# test if movie file can be uploaded from client computers as guest
 	smbclient -U guest -N -c "put cinekid2015sourcevideos/test.mp4 \"test/20/$(testfile)\"" //localhost/Cinekid
-	
+
 	# wait for file to be rendered (this can take a while ~2 minutes, abort with ctrl-c)
 	while sleep 5; do \
 		test -f "/srv/cinekid/done/test/20/$(testfile)" && break; \
@@ -189,7 +189,7 @@ integration-test-live:
 		curl -s -I --fail "http://mijnwerk.cinekid.nl/results/test/20/$(testfile_url)" && break; \
 		curl -s -I --fail "http://mijnwerk.cinekid.nl/results/test/20/$(subst m4v,jpg,$(testfile_url))" && break; \
 	done
- 
+
 	@echo -- All good --
 
 timestamp=$(shell date +%s)
