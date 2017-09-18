@@ -40,7 +40,9 @@ The following command will test the integrity of this project for development:
 
 # Development
 
-For local development Vagrant can be used to create virtual render servers and run tests against the provisioned configuration. Make sure vragrant is installed and run:
+These instructions only apply if you want to develop the render cluster using virtual machines instead of real hardware.
+
+For local development Vagrant can be used to create virtual render servers and run tests against the provisioned configuration. Make sure [Vagrant](https://www.vagrantup.com/) is installed/setup and run:
 
     vagrant up
 
@@ -54,7 +56,7 @@ And once inside:
 
     make status
 
-To run the testsuite against the virtual environment run:
+To run the testsuite against the virtual environment run (outside of virtual machines):
 
     make integration-test
 
@@ -66,7 +68,7 @@ If provisioning needs to be reapplied (if it failed or configuration has changed
 
     vagrant provision encode-server-1
 
-This is equivalent of running `make` inside one of the virtual machines.
+This is equivalent of running `make` when logged into one of the virtual machines.
 
 # Directory structure
 
