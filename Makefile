@@ -124,6 +124,9 @@ fill_incoming:
 fill_source:
 	sudo -u cinekid cp -v cinekid*sourcevideos/* /srv/cinekid/samba/test/20/
 
+test_werkjes:
+	cp cinekid2017sourcevideos/* /srv/cinekid/samba/test/20/
+
 .PHONY: fix check test integration-test
 fix: $(autopep8)
 	# fix simple python style issues
