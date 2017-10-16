@@ -5,7 +5,7 @@ This are application and provisioning sources to create media transcode servers.
 - Ubuntu installation (tested on 14.04)
 - User with `sudo` rights (or `root`)
 
-# Installation
+# Quickstart
 
 Make sure the computer is running `Ubuntu 14.04 LTS`.
 
@@ -58,6 +58,10 @@ This will place some samples in the incoming Samba share which will be picked up
 To watch the process run:
 
     make status
+
+For more options, `make` supports tab completion:
+
+    make <tab>
 
 # Development
 
