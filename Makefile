@@ -22,7 +22,7 @@ all: apply
 # install puppet modules
 Puppetfile.lock: Puppetfile | $(librarian-puppet) $(git)
 	# update puppet module dependencies
-	$(librarian-puppet) install
+	sudo $(librarian-puppet) install
 	touch $@
 
 /var/run/.initial_apt:
