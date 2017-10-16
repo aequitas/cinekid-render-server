@@ -223,6 +223,7 @@ class cinekid (
       ipaddress => $ip_address,
       netmask   => $netmask,
       gateway   => $gateway,
+      use_dhcp  => true,
     }
   }
   if $dns {
