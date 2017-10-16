@@ -7,21 +7,48 @@ This are application and provisioning sources to create media transcode servers.
 
 # Installation
 
+Make sure the computer is running `Ubuntu 14.04 LTS`.
+
+Login as a normal user with `sudo` access.
+
+Do not take the offer to upgrade to the latest Ubuntu!
+
+Open `Terminal`: Upper left icon, search for `Terminal`.
+
 Install git and pull the repository locally:
 
-    sudo apt-get install -yqq git
+    sudo apt-get install git
     git clone https://github.com/aequitas/cinekid-render-server.git
+    cd cinekid-render-server
 
-Run the following command to bootstrap/install:
+Copy example settings file to actual settings file name:
 
-    cd cinekid
-    make
+    cp hiera/settings.yaml.dist hiera/settings.yaml
 
-To reapply changes after the repository has been updated run these commands:
+Get IP address of current computer:
 
-    cd cinekid
+    ip addr show dev eth0
+
+One computer is primary one others are secondary. The primary runs the Samba shares and performs Rsync to the webserver. Choose one computer as primary and use this computers IP in `settings.yaml` (below). The other render computers IP addresses should be configured as secondary in `settings.yaml`. A computer will determine if it is primary or secondary by checking its IP address in the settings and will provision accordingly. To Promote a secondary to a primare (eg: to replace a broker primary). Replace the IP address of primary in the settings and apply again (below).
+
+Edit the settings file (save changes with ctrl-o and exit with ctrl-x) and modify the IP addresses en `works` (werkjes) directories that need to be created. All options have defaults in `hiera/common.yaml` which are overwritten by `hiera/settings.yaml`.
+
+Information such as `cinekid::web_user`, `cinekid::web_host` and `cinekid::public_key` which are required for uploading the results to the webserver should be known and need to be added as well. (It is possible to run `sudo make` first and then login using SSH from a laptop to copy and paste this credentials and then run `suod make` again to reapply configuration).
+
+    nano hiera/settings.yaml
+
+Run the following command to bootstrap/install according to the settings:
+
+    sudo make
+
+The provision scripts (Puppet) will now install all required dependencies for encoding and configure the computer to be used as encoding server.
+
+The `sudo make` command can be run as often as needed (eg: after changing settings) and will try to undo all changes made manually to ensure the computer is in a expected state.
+
+To reapply changes after the repository has been updated on Github run these commands:
+
     git pull
-    make
+    sudo make
 
 # Testing
 This project is provided with a test suite to validate code quality and functionality.

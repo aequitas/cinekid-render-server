@@ -18,7 +18,7 @@ autopep8 = $(VIRTUALENV)/bin/autopep8
 .PHONY: apply bootstrap
 
 ifneq ($(shell whoami),root)
-$(error Must not run as root or use sudo!)
+$(error Run using sudo: sudo make)
 endif
 
 all: apply
