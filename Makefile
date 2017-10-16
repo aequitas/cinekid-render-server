@@ -36,7 +36,7 @@ Puppetfile.lock: Puppetfile | $(librarian-puppet) $(git)
 .PHONY: git-remote-update
 git-remote-update: | $(git)
 	# checking for upstream changes
-	@git remote update &>/dev/null || true
+	@sudo -u $SUDO_USER git remote update &>/dev/null || true
 	@if [ ! -z "$$(git log HEAD..origin/master --oneline)" ];then \
 		git log HEAD..origin/master --oneline; \
 		echo "to pull in upstream changes run 'git pull' and apply again."; \
