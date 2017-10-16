@@ -51,12 +51,6 @@ To reapply changes after the repository has been updated on Github run:
 
     make update
 
-To verify if everything is working run:
-
-    make test_werkjes
-
-This will place some samples in the incoming Samba share which will be picked up by the pipeline.
-
 To watch the process run:
 
     make status
@@ -67,6 +61,22 @@ For more options, `make` supports tab completion:
 
 Do not change any other files except `settings.yaml`. Otherwise updates might not be pulled in via `git pull` (`error: Your local changes to the following files would be overwritten by merge:`).
 To reset the `cinekid-render-server` and undo any changes run: `git reset --hard`.
+
+## Test samples
+
+This step requires git-lfs to download the large files. Follow these instructions: https://github.com/git-lfs/git-lfs/wiki/Installation
+
+In `cinekid-render-server` run:
+
+    git lfs install
+    git lfs init
+    git lfs pull
+
+To verify if everything is working run:
+
+    make test_werkjes
+
+This will place some samples in the incoming Samba share which will be picked up by the pipeline.
 
 # Development
 
