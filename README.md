@@ -65,6 +65,9 @@ For more options, `make` supports tab completion:
 
     make <tab>
 
+Do not change any other files except `settings.yaml`. Otherwise updates might not be pulled in via `git pull` (`error: Your local changes to the following files would be overwritten by merge:`).
+To reset the `cinekid-render-server` and undo any changes run: `git reset --hard`.
+
 # Development
 
 These instructions only apply if you want to develop the render cluster using virtual machines instead of real hardware.
