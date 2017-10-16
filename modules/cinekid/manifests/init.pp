@@ -219,11 +219,20 @@ class cinekid (
   }
 
   if $ip_address {
-    network::interface { $network_interface:
-      ipaddress   => $ip_address,
-      netmask     => $netmask,
-      gateway     => $gateway,
-      enable_dhcp => true,
+    if $gateway {
+      network::interface { $network_interface:
+        ipaddress => $ip_address,
+        netmask   => $netmask,
+        gateway   => $gateway,
+      }
+    } else {
+      network::interface { $network_interface:
+        enable_dhcp => true,
+      }
+      file_line {'fixed-ip':
+        path => '/etc/dhcp/dhclient.conf',
+        line => "alias { interface \"${network_interface}\"; fixed-address ${ip_address}; }",
+      }
     }
   }
   if $dns {
