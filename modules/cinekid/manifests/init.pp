@@ -192,7 +192,7 @@ class cinekid (
   }
   exec {'also override gnome acpi logic':
     command     => '/usr/bin/gsettings set org.gnome.settings-daemon.plugins.power button-power shutdown',
-    unless      => '/usr/bin/gsettings get org.gnome.settings-daemon.plugins.power button-power|grep interactive',
+    unless      => '/usr/bin/gsettings get org.gnome.settings-daemon.plugins.power button-power|grep -v interactive',
     environment => ['DISPLAY=:0.0'],
   }
 
