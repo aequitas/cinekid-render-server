@@ -17,10 +17,6 @@ autopep8 = $(VIRTUALENV)/bin/autopep8
 
 .PHONY: apply bootstrap
 
-ifneq ($(shell whoami),root)
-$(error Run using sudo: sudo make)
-endif
-
 all: apply
 
 # install puppet modules
