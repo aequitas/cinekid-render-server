@@ -19,9 +19,9 @@ autopep8 = $(VIRTUALENV)/bin/autopep8
 
 all: apply
 
-update: pull apply
+update: git-remote-update pull apply
 
-pull:
+pull: | git-remote-update
 	git pull
 
 # install puppet modules
