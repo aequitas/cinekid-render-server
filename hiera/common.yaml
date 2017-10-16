@@ -100,6 +100,3 @@ samba::server::shares:
     - read only = yes
 
 cinekid::network_interface: eth0
-cinekid::gateway: 172.16.20.1
-cinekid::dns: 172.16.20.1
-cinekid::netmask: 255.255.255.0

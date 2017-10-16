@@ -7,14 +7,15 @@
 #
 # All these settings have defaults in common.yaml which will be used if not provided here.
 
-# configure fixed IP address of this computer
+# configure fixed IP address of this computer, other network information will be requested via DHCP
 # cinekid::ip_address: 172.16.20.20
+# cinekid::ip_address: 172.16.20.21
 
-# optionally specify different network interface and/or network settings
+# optionally specify explicit network interface and/or network settings
 # cinekid::gateway: 172.16.20.1
 # cinekid::netmask: 255.255.255.0
-# cindekid::dns: 172.16.20.1
 # cinekid::network_interface: eth0
+# cindekid::dns: 172.16.20.1
 
 # # ip addresses for primary and secondary server(s)
 # cinekid::nfs::primary_server: 172.16.20.20
