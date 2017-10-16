@@ -191,9 +191,8 @@ class cinekid (
     replace => true,
   }
   exec {'also override gnome acpi logic':
-    command     => '/usr/bin/gsettings set org.gnome.settings-daemon.plugins.power button-power shutdown',
-    unless      => '/usr/bin/gsettings get org.gnome.settings-daemon.plugins.power button-power|grep shutdown',
-    environment => ['DISPLAY=:0.0'],
+    command     => '/usr/bin/dbus-launch --exit-with-session /usr/bin/gsettings set org.gnome.settings-daemon.plugins.power button-power shutdown',
+    unless      => '/usr/bin/dbus-launch --exit-with-session /usr/bin/gsettings get org.gnome.settings-daemon.plugins.power button-power|grep shutdown',
   }
 
   # allow cinekid user sudo with no password for convenience
