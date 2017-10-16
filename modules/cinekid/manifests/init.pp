@@ -220,10 +220,10 @@ class cinekid (
 
   if $ip_address {
     network::interface { $network_interface:
-      ipaddress => $ip_address,
-      netmask   => $netmask,
-      gateway   => $gateway,
-      use_dhcp  => true,
+      ipaddress   => $ip_address,
+      netmask     => $netmask,
+      gateway     => $gateway,
+      enable_dhcp => true,
     }
   }
   if $dns {
