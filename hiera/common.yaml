@@ -23,7 +23,7 @@ cinekid::works:
 
 # range of day that need to be created in works folders
 cinekid::day_start: 10
-cinekid::day_stop: 22
+cinekid::day_stop: 30
 
 # user and ssh key for webserver sftp sync
 cinekid::web_user: cinekid
