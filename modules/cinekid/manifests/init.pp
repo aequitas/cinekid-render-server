@@ -199,8 +199,13 @@ class cinekid (
   }
 
   # auto start terminal fullscreen with pipeline status at boot
-  file { '/home/cinekid/.config/autostart/status.desktop':
-    ensure => present,
-    source => 'puppet:///modules/cinekid/terminal-status.desktop',
+  file {
+    '/home/cinekid/.config':
+      ensure => directory;
+    '/home/cinekid/.config/autostart/':
+      ensure => directory;
+    '/home/cinekid/.config/autostart/status.desktop':
+      ensure => present,
+      source => 'puppet:///modules/cinekid/terminal-status.desktop';
   }
 }
