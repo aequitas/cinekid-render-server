@@ -33,32 +33,32 @@ One computer is primary one others are secondary. The primary runs the Samba sha
 
 Edit the settings file (save changes with ctrl-o and exit with ctrl-x) and modify the IP addresses en `works` (werkjes) directories that need to be created. All options have defaults in `hiera/common.yaml` which are overwritten by `hiera/settings.yaml`.
 
-Information such as `cinekid::web_user`, `cinekid::web_host` and `cinekid::public_key` which are required for uploading the results to the webserver should be known and need to be added as well. (It is possible to run `sudo make` first and then login using SSH from a laptop to copy and paste this credentials and then run `suod make` again to reapply configuration).
+Information such as `cinekid::web_user`, `cinekid::web_host` and `cinekid::public_key` which are required for uploading the results to the webserver should be known and need to be added as well. (It is possible to run `make` first and then login using SSH from a laptop to copy and paste this credentials and then run `make` again to reapply configuration).
 
     nano hiera/settings.yaml
 
 Run the following command to bootstrap/install according to the settings:
 
-    sudo make
+    make
 
 The provision scripts (Puppet) will now install all required dependencies for encoding and configure the computer to be used as encoding server.
 
-The `sudo make` command can be run as often as needed (eg: after changing settings) and will try to undo all changes made manually to ensure the computer is in a expected state.
+The `make` command can be run as often as needed (eg: after changing settings) and will try to undo all changes made manually to ensure the computer is in a expected state.
 
 To reapply changes after the repository has been updated on Github run these commands:
 
     git pull
-    sudo make
+    make
 
 To verify if everything is working run:
 
-    sudo make test_werkjes
+    make test_werkjes
 
 This will place some samples in the incoming Samba share which will be picked up by the pipeline.
 
 To watch the process run:
 
-    sudo make status
+    make status
 
 # Development
 
