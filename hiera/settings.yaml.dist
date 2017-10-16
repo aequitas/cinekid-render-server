@@ -13,6 +13,7 @@
 # optionally specify different network interface and/or network settings
 # cinekid::gateway: 172.16.20.1
 # cinekid::netmask: 255.255.255.0
+# cindekid::dns: 172.16.20.1
 # cinekid::network_interface: eth0
 
 # # ip addresses for primary and secondary server(s)

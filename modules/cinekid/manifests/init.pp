@@ -19,6 +19,7 @@ class cinekid (
   $network_interface=undef,
   $netmask=undef,
   $gateway=undef,
+  $dns=undef,
 ){
   apt::ppa { 'ppa:heyarje/libav-11': }
 
@@ -222,6 +223,14 @@ class cinekid (
       ipaddress => $ip_address,
       netmask   => $netmask,
       gateway   => $gateway,
+    }
+  }
+  if $dns {
+    file_line { 'resolvconf record':
+      path    => '/etc/resolv.conf',
+      line    => "nameserver ${dns}",
+      match   => 'nameserver',
+      replace => true,
     }
   }
 }
