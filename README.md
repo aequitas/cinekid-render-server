@@ -47,8 +47,7 @@ The `make` command can be run as often as needed (eg: after changing settings) a
 
 To reapply changes after the repository has been updated on Github run these commands:
 
-    git pull
-    make
+    git pull && make
 
 To verify if everything is working run:
 
