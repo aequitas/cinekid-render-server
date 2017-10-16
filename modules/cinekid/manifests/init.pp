@@ -181,4 +181,26 @@ class cinekid (
         days  => $days,
       }
   }
+
+  # don't ask what to do when pressing power button
+  file_line { 'powerdown on button':
+    ensure  => present,
+    path    => '/etc/acpi/events/powerbtn',
+    line    => 'action=/sbin/shutdown',
+    match   => 'action=',
+    replace => true,
+  }
+
+  # allow cinekid user sudo with no password for convenience
+  file_line {'cinekid user sudo no password':
+    ensure => present,
+    path   => '/etc/sudoers',
+    line   => 'ubuntu ALL=(ALL) NOPASSWD:ALL',
+  }
+
+  # auto start terminal fullscreen with pipeline status at boot
+  file { '/home/cinekid/.config/autostart/status.desktop':
+    ensure => present,
+    source => 'puppet:///modules/cinekid/terminal-status.desktop',
+  }
 }

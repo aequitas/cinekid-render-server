@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=Cinekid Render Status
+Exec=/usr/bin/gnome-terminal --window --full-screen -e 'make -C cinekid-render-server status'
+X-GNOME-Autostart-enabled=true

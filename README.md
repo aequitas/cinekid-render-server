@@ -9,7 +9,7 @@ This are application and provisioning sources to create media transcode servers.
 
 Make sure the computer is running `Ubuntu 14.04 LTS`.
 
-Login as a normal user with `sudo` access.
+Create and login as user `cinekid`. This user needs sudo permissions.
 
 Do not take the offer to upgrade to the latest Ubuntu!
 
