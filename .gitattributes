@@ -1,2 +1,5 @@
 hiera/secrets.yaml filter=git-crypt diff=git-crypt
 network/secrets.txt filter=git-crypt diff=git-crypt
+cinekid2015sourcevideos/* filter=lfs diff=lfs merge=lfs -text
+cinekid2016sourcevideos/* filter=lfs diff=lfs merge=lfs -text
+cinekid2017sourcevideos/* filter=lfs diff=lfs merge=lfs -text
