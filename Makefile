@@ -19,6 +19,11 @@ autopep8 = $(VIRTUALENV)/bin/autopep8
 
 all: apply
 
+update: pull apply
+
+pull:
+	git pull
+
 # install puppet modules
 Puppetfile.lock: Puppetfile | $(librarian-puppet) $(git)
 	# update puppet module dependencies
@@ -42,7 +47,7 @@ git-remote-update: | $(git)
 	# /checking for upstream changes
 
 # apply puppet configuration
-apply: Puppetfile.lock /var/run/.initial_apt git-remote-update| $(puppet)
+apply: Puppetfile.lock /var/run/.initial_apt git-remote-update| $(puppet) pull
 	# apply configuration
 	sudo -E $(puppet) apply --verbose \
 		--modulepath=modules:vendor/modules \

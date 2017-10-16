@@ -47,9 +47,9 @@ The provision scripts (Puppet) will now install all required dependencies for en
 
 The `make` command can be run as often as needed (eg: after changing settings) and will try to undo all changes made manually to ensure the computer is in a expected state.
 
-To reapply changes after the repository has been updated on Github run these commands:
+To reapply changes after the repository has been updated on Github run:
 
-    git pull && make
+    make update
 
 To verify if everything is working run:
 
