@@ -195,7 +195,7 @@ class cinekid (
   file_line {'cinekid user sudo no password':
     ensure => present,
     path   => '/etc/sudoers',
-    line   => 'ubuntu ALL=(ALL) NOPASSWD:ALL',
+    line   => 'cinekid ALL=(ALL) NOPASSWD:ALL',
   }
 
   # auto start terminal fullscreen with pipeline status at boot
