@@ -3,12 +3,14 @@
 #
 # settings.yaml
 #
-# uncomment lines to overwrite settings
+# Uncomment lines to overwrite settings.
+#
+# All these settings have defaults in common.yaml which will be used if not provided here.
 
 # # ip addresses for primary and secondary server(s)
-# cinekid::nfs::primary_server: 192.168.42.2
+# cinekid::nfs::primary_server: 172.16.20.x
 # cinekid::nfs::secondary_servers:
-#     - 192.168.42.3
+#     - 172.16.20.x
 #
 # # works folders that need to be created
 # cinekid::works:
