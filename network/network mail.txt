@@ -1,0 +1,358 @@
+Wireless aps op vlan20 untagged portjes
+
+
+On Sun, Oct 9, 2016, 11:17 Teun van der Laan <teunvdlaan@gmail.com> wrote:
+
+
+Wireless is: Cisco/Cinekid2012?
+
+---------- Forwarded message ---------
+From: Maarten te Paske <mtp@renice.nl>
+Date: Sat, Sep 19, 2015, 20:26
+Subject: Re: Encoding 2015
+To: Teun van der Laan <teunvdlaan@gmail.com>
+Cc: Bart Koppe <bk@bartkoppe.net>
+
+
+Ha Teun,
+
+Ik cc hiervoor even Bart Koppe, want ik heb begrepen dat hij dit jaar ook betrokken is bij het Medialab.
+
+Wat betreft het netwerk: ik heb helaas nergens gedocumenteerd hoe het precies in elkaar steekt. Maar ik heb eea. kunnen construeren uit mails van voorgaande jaren. Op zich niets nieuws voor jou denk ik, want die mails heb jij ook allemaal gehad.
+
+Westergas levert een uplink daar in de hoek bij het systeembeheer hok. Je prikt vanaf daar een kabel in de Cisco router. Ik meen dat er stickers opzitten waar de uplink in moet. Uit mijn hoofd heeft de router aan de buitenkant IP-adres 192.168.16.10, en ze NAT’en alles vanaf 77.243.166.220 door naar dat interne IP-adres. Achter die router sluit je een HP switch aan, en daarachter weer de Cisco wireless controller. Let op dat je die controller niet direct in de router prikt, want dan kom je niet bij de management interface!
+
+Aan de binnenkant zijn er deze VLAN’s:
+
+VLAN10: 172.16.10.0/24, filtered internet, wired
+VLAN16: 172.16.16.0/24, NOC wired & wireless - alle switches en APs zitten ook in dit VLAN
+VLAN20: 172.16.20.0/24, unfiltered unternet, wired
+VLAN30: 172.16.30.0/24, niet gebruikt
+VLAN40: 172.16.40.0/24, filtered internet, wireless
+VLAN50: 172.16.50.0/24, unfiltered internet, wireless
+VLAN60: 172.16.60.0/24, WLC-4402 management
+
+Vorig jaar hebben we de SSID’s van de draadloze netwerken generiek gemaakt, dus zonder jaartal erin.
+
+Dan nog wat wachtwoorden e.d.:
+
+Code slot netwerkhok:           142
+Cisco username/password:        Cisco/Cisco
+WPA key Cinekid-N:              C1sc0C1sc0
+WPA key Cinekid-U:              joostjoost
+
+En dan zijn er nog deze IP-adressen:
+
+Cisco 2811 (router):            172.16.16.1 (bereikbaar via telnet)
+Wireless controller:            172.16.60.2 (bereikbaar via https)
+
+Ik kan je helaas niet exact(er) zeggen welke kabel je waarin prikt, maar heel moeilijk is het nooit. Komen jullie vast wel uit...
+
+Groet,
+
+Maarten
+
+
+
+
+> On 17 Sep 2015, at 09:10, Teun van der Laan <teunvdlaan@gmail.com> wrote:
+>
+> Thanks!
+>
+> Heb je ergens nog dat lijstje met hoe ik die router kan configgen? Moet wss alleen t IP configgen enzo, maar toch. Passwords heb jij ergens ook dacht ik..?
+>
+> Cheers!
+>
+> On Thu, Sep 17, 2015, 07:24 Maarten te Paske <mtp@renice.nl> wrote:
+> Ha Teun,
+>
+> Op onderstaande link staan twee .tar.gz bestanden. Dit zijn de “images” van de Linux installaties die ik vorig jaar heb gebruikt.
+>
+> https://ssl.analogue.nl/oc/public.php?service=files&t=2376fd6b68d6a069d341f700206d016b
+>
+> De “trusty” versie is een nieuwere versie van Ubuntu, maar ik merkte dat de versie van ffmpeg die hierin zit niet al het videomateriaal kon converteren. De versie in “precise” kon dat wel.
+>
+> Instructies:
+>
+> - Boot de encoder computers van een Linux livecd
+> - Partitioneer de disk als volgt: /dev/sda1 (ext4), /dev/sda2 (swap)
+> - Maak de filesystems aan: mkfs.ext4 /dev/sda1; mkswap /dev/sda2
+> - Mount het nieuw aangemaakte ext4 filesysteem en pak de .tar.gz hierin uit
+> - Herstel de bootloader (chroot /media/sda1; update-initramfs, update-grub, grub-install)
+> - Als het goed is boot je nu een Xubuntu desktop omgeving. Je kan inloggen met gebruikersnaam ‘mtp’ en wachtwoord ‘koekje123’.
+> - Alle conversie scripts staan in /usr/local/sbin
+>
+> Andere zaken die in dat Linux image zijn geregeld zijn:
+>
+> - Een samba server, zodat men de werkjes kan uploaden naar een share
+> - Een script voor het uploaden van de geconverteerde werkjes naar de Cinekid webserver
+> - Een backupscript dat al het materiaal op de externe USB-disk zet
+> - Een NFS-export van de ene encoder naar de andere
+>
+> Het is lastig om dat allemaal uit te tikken, maar iemand met een beetje linux kennis zal hier weinig moeite mee hebben.
+>
+> Groet, en succes,
+>
+> Maarten
+>
+>
+>> On 15 Sep 2015, at 22:05, Teun van der Laan <teunvdlaan@gmail.com> wrote:
+>>
+>> Hai, kan je dit nog ff sturen? Liefst beide, maar iig de scripts!
+>>
+>> Thanks!
+>>
+>> On Wed, Sep 9, 2015, 14:49 Maarten te Paske <mtp@renice.nl> wrote:
+>> Ha Teun,
+>>
+>> Ik zag dat je vanmiddag belde, maar ik zit de hele middag in een overleg. Maar wil je enkel de scripts hebben? Of een volledig Linux image?
+>>
+>> Groet,
+>>
+>> Maarten
+>>
+>> Sent from my BlackBerry 10 smartphone.
+>> From: Teun van der Laan
+>> Sent: dinsdag 8 september 2015 15:41
+>> To: Maarten te Paske
+>> Subject: Re: Encoding 2015
+>>
+>> Hey Maarten, heb je de scripts nog ergens? Dan halen we daar de specs even uit, en mogelijk gebruiken we er een deel van.
+>>
+>>
+>> On Fri, Aug 14, 2015, 14:25 Maarten te Paske <mtp@renice.nl> wrote:
+>> Ha Tim,
+>>
+>> Voor het converteren van de videos van de werkjes maak ik gebruik van
+>> ffmpeg <https://www.ffmpeg.org> onder Linux. De argumenten voor de
+>> aanroep zijn me ooit aangeleverd door Mieg, maar afgelopen jaar heb ik
+>> daar nog wat aan getweakt omdat de kwaliteit omhoog mocht. Wat ik altijd
+>> concreet doe is:
+>>
+>> - Tijdens de opbouwdagen installeer ik Linux op 2 snelle (!)
+>>   desktops. Ik heb daarvoor in het verleden een paar images gemaakt die
+>>   ik wegschrijf naar de lokale disk, zodat ik ter plekke geen tijd meer
+>>   kwijt ben aan configuratie.
+>> - Een van de 2 servers richt ik altijd in als samba server, zodat we
+>>   Windows (CIFS) shares kunnen aanmaken waarop iedereen de werkjes
+>>   uploadt. De folders waarheen wordt geupload deel ik via NFS met de
+>>   andere desktop, zodat er gelijktijdig kan worden geconverteerd.
+>> - Sinds 2 jaar hang ik een losse USB-disk aan de tweede desktop, en
+>>   iedere uur backup ik alle data (bronmateriaal + geconverteerde videos)
+>>   naar deze disk. Zo weet je zeker dat na afloop al het materiaal nog
+>>   beschikbaar is (ook als het converteren nog niet klaar was).
+>> - Ieder uur upload ik (geautomatiseerd) het geconverteerde werk naar de
+>>   webserver van Cinekid.
+>> - Een keer per dag leverde Rianne 's avonds via Dropbox de video van de
+>>   kleuterworkshop aan. Die moest ik dan met de hand op de encoder
+>>   plaatsen waarna het converteren en het uploaden vanzelf ging.
+>>
+>> Zaken die belangrijk zijn om te regelen zijn:
+>>
+>> - Afspraken maken over het formaat waarin het bronmateriaal wordt
+>>   aangeleverd, en de naamgeving van de bestanden. Dat eerste is
+>>   belangrijk omdat sommige (proprietary) codecs niet door ffmpeg worden
+>>   ondersteund. Dit moet dus vooraf voor ieder werkje getest worden!
+>> - Afspraken met Mieg over toegang tot de Cinekid webserver (ik leverde
+>>   ieder jaar een public ssh key aan), een overzicht van de werkjes en de
+>>   naamgeving. Die naamgeving is voor Mieg ook erg belangrijk zodat hij
+>>   kan voorbereiden dat werkjes automatisch op de website verschijnen.
+>>
+>> Wat betreft de inrichting van die Linux desktop heb ik nog een paar
+>> tips:
+>>
+>> - Zorg dat je de scripting zo maakt dat je (per desktop) even veel
+>>   instances van ffmpeg start als het aantal cores dat je tot je
+>>   beschikking hebt.
+>> - Zorg daarnaast dat je niet meerdere keren tegelijk hetzelfde file gaat
+>>   converteren. Ik deed dat door voor ieder file een .lock file neer te
+>>   zetten zodat je kon zien dat die al geconverteerd werd. Als het
+>>   converteren faalde moet je uiteraard de .lock weer weghalen.
+>> - Upload pas een file naar de server als deze langer dan 5 minuten
+>>   geleden voor het laatst is gewijzigd (mtime). Zo voorkom je dat je
+>>   files op de webserver neerzet die nog niet voltooid zijn.
+>>
+>> Hoewel ik ieder jaar de Linux installatie opnieuw voorbereidde en de
+>> scripting grotendeels opnieuw schreef heb ik nog wel wat liggen. Ik zal
+>> jullie een downloadlink toesturen van:
+>>
+>> - cinekid-encoder1.tar.gz; een tarball van een Linux installatie. Als je
+>>   deze wilt neerzetten moet je booten vanaf een Linux live omgeving, de
+>>   disk partitioneren, deze tar uitpakken en de bootloader herstellen.
+>>   Dat moet iemand die handig is met Linux wel lukken. Timestamp van de
+>>   file is 2013-10-11.
+>> - sdb1.img; een image van een disk. Ook hiervoor geldt dat je moet
+>>   booten van een live omgeving, maar daarna zet je het image op de disk
+>>   met dd. Ook hier moet je naderhand de bootloader herstellen. Timestamp
+>>   van de file is 2013-10-08.
+>> - cinekid2012scripts.tar; een tar met de scripts die ik had geschreven
+>>   voor Cinekid 2012. Deze scripts zijn vooral een uitgangspunt voor de
+>>   argumenten die je kan gebruiken voor ffmpeg, maar zijn (denk ik) niet
+>>   kant en klaar. Ik herschreef dat vaak toch in de dagen voor Cinekid en
+>>   bouwde wat loopjes om optimaal gebruik te maken van de
+>>   processorkracht van die encoders.
+>>
+>> Nog een punt: vorig jaar had ik moeite met het blijven gebruiken van
+>> ffmpeg. Ik kan me herinneren dat de open source community over was
+>> gestapt op Libav, maar dat heb ik niet gebruikt omdat ik de werking
+>> daarvan opnieuw moest uitdokteren. Misschien is het inmiddels wel handig
+>> om die stap te maken, maar dat laat ik over aan de persoon die het dit
+>> jaar gaat doen.
+>>
+>> Als laatste nog een overweging: het converteren van al die werkjes is
+>> allemaal vrij bewerkelijk. Mij lijkt het nog steeds verstandig om te
+>> kijken of het niet makkelijk is om alles te uploaden naar bijvoorbeeld
+>> Youtube of Vimeo. Het scheelt je heel veel converteerwerk, en het
+>> resultaat ziet er vast mooier uit dan hoe wij het doen.
+>>
+>> Groet,
+>>
+>> Maarten
+>>
+>>
+>> On Thu, Aug 13, 2015 at 01:57:36PM +0200, Maarten te Paske wrote:
+>> > Ha Tim, Teun,
+>> >
+>> > Sorry dat ik hier nog niet op gereageerd heb!
+>> >
+>> > Ik ga proberen vanavond even de tijd te nemen om op te duikelen wat ik
+>> > ook alweer heb liggen en uiteen te zetten wat er moet gebeuren en hoe ik
+>> > dat deed.
+>> >
+>> > Groet,
+>> >
+>> > Maarten
+>> >
+>> >
+>> > On Mon, Aug 03, 2015 at 12:22:37PM +0000, Tim Hoogesteger wrote:
+>> > >    Ha Maarten,
+>> > >
+>> > >    Heb jij deze week tijd om een overdracht te doen aan Teun en zijn contact?
+>> > >    Dan kunnen we alle vragen in een keer beantwoorden.
+>> > >
+>> > >    Ik hoor je graag, ciao, Tim
+>> > >
+>> > >    Tim Hoogesteger
+>> > >    Senior Producer Cinekid MediaLab
+>> > >    Stichting Cinekid
+>> > >    Asterweg 20G2
+>> > >    1031 HN Amsterdam
+>> > >    T: +31(0)20 – 53 17 893
+>> > >    M: +31(0)6 - 53 81 39 86
+>> > >
+>> > >    [1]www.cinekid.nl
+>> > >    [2]www.facebook.com/cinekid
+>> > >    [3]www.twitter.com/cinekid
+>> > >    [4]www.linkedin.com/company/cinekid-festival
+>> > >
+>> > >
+>> > >    --------------------------------------------------------------------------
+>> > >
+>> > >    From: Teun van der Laan <teunvdlaan@gmail.com>
+>> > >    Sent: Monday, August 3, 2015 2:03 PM
+>> > >    To: Maarten te Paske; Tim Hoogesteger
+>> > >    Subject: Re: Encoding 2015
+>> > >
+>> > >
+>> > >    En Tim, heb je (via mieg?) info voor me wat betreft gewenst output en
+>> > >    server uploads?
+>> > >    En heb je (of Kees) al specs wat betreft output van de workshops?
+>> > >
+>> > >    Groet, Teun
+>> > >
+>> > >    On Mon, Aug 3, 2015, 11:57 Teun van der Laan <[5]teunvdlaan@gmail.com>
+>> > >    wrote:
+>> > >
+>> > >      Hey Maarten,
+>> > >
+>> > >      Heb je wat ifno voor me wat er precies moet gebeuren? Ik heb mogelijk
+>> > >      iemand die het kan doen.
+>> > >
+>> > >      En de afstemming met mieg?
+>> > >
+>> > >      - Teun
+>> > >
+>> > >      On Fri, Jul 10, 2015, 16:49 Maarten te Paske <[6]mtp@renice.nl> wrote:
+>> > >
+>> > >        Ha Tim,
+>> > >
+>> > >        Sorry dat ik nog niet op je vraag had gereageerd.
+>> > >
+>> > >        Zoals ik eerder aangaf kan ik sowieso de scripts overdragen die ik tot
+>> > >        dusver heb gebruikt. Dat is een stapel bash scripts die je kan draaien
+>> > >        op een Linux systeem. Het leunt uit mijn hoofd sterk op mencoder
+>> > >        <[7]http://www.mplayerhq.hu/DOCS/HTML/en/mencoder.html>, maar ik kan
+>> > >        me
+>> > >        herinneren dat ik afgelopen jaar tegen het probleem aanliep dat de
+>> > >        ontwikkeling aan die tool is gestopt en dat je voor hedendaagse codecs
+>> > >        naar FFmpeg <[8]https://www.ffmpeg.org/> moest uitwijken.
+>> > >
+>> > >        Ik heb toen nog ergens een werkende versie van mencoder vandaan
+>> > >        gehaald
+>> > >        omdat ik anders overnieuw moest beginnen qua conversieopties e.d.
+>> > >
+>> > >        Het hele encoden is niet heel ingewikkeld, maar het vereist denk ik
+>> > >        wel
+>> > >        flink wat handigheid met Linux. En voor mij geldt dat ik echt vrij
+>> > >        weinig tijd op het moment heb; ik ben druk met werk en verwacht over
+>> > >        een
+>> > >        aantal weken een tweede kindje. Je kan begrijpen dat mijn prioriteiten
+>> > >        nu dus ergens anders liggen :)
+>> > >
+>> > >        Groet,
+>> > >
+>> > >        Maarten
+>> > >
+>> > >        On Tue, Jul 07, 2015 at 08:39:11AM +0000, Tim Hoogesteger wrote:
+>> > >        > Hoi Maarten en Teun,
+>> > >        >
+>> > >        >
+>> > >        > Mieg geeft aan dit jaar geen rol te willen spelen in het encoding
+>> > >        gedeelte. Hij blijft wel betrokken bij de presentatie op de website
+>> > >        van de werkjes.
+>> > >        >
+>> > >        >
+>> > >        > Ik ben dus hard op zoek naar een oplossing om dit traject goed voor
+>> > >        te bereiden. Hebben jullie ideeen hierover?
+>> > >        > Maarten zou jij bijvoorbeeld een en ander kunnen overdragen aan Teun
+>> > >        zodat Teun dit kan oppakken? Teun hoe denk jij hierover?
+>> > >        >
+>> > >        > Groetjes,Tim
+>> > >        >
+>> > >        > Tim Hoogesteger
+>> > >        > Senior Producer Cinekid MediaLab
+>> > >        >
+>> > >        > Stichting Cinekid
+>> > >        > Asterweg 20G2
+>> > >        > 1031 HN Amsterdam
+>> > >        > T: +31(0)20 - 53 17 893
+>> > >        > M: +31(0)6 - 53 81 39 86
+>> > >        >
+>> > >        > [9]www.cinekid.nl<[10]http://CINEKID.NL>
+>> > >        > [11]www.facebook.com/cinekid<[12]http://www.facebook.com/cinekid>
+>> > >        > [13]www.twitter.com/cinekid<[14]http://www.twitter.com/cinekid>
+>> > >        >
+>> > >        [15]www.linkedin.com/company/cinekid-festival<[16]http://www.linkedin.com/company/cinekid-festival>
+>> > >        >
+>> > >
+>> > > References
+>> > >
+>> > >    Visible links
+>> > >    1. http://cinekid.nl/
+>> > >    2. http://www.facebook.com/cinekid
+>> > >    3. http://www.twitter.com/cinekid
+>> > >    4. http://www.linkedin.com/company/cinekid-festival
+>> > >    5. mailto:teunvdlaan@gmail.com
+>> > >    6. mailto:mtp@renice.nl
+>> > >    7. http://www.mplayerhq.hu/DOCS/HTML/en/mencoder.html
+>> > >    8. https://www.ffmpeg.org/
+>> > >    9. http://www.cinekid.nl/
+>> > >   10. http://cinekid.nl/
+>> > >   11. http://www.facebook.com/cinekid
+>> > >   12. http://www.facebook.com/cinekid
+>> > >   13. http://www.twitter.com/cinekid
+>> > >   14. http://www.twitter.com/cinekid
+>> > >   15. http://www.linkedin.com/company/cinekid-festival
+>> > >   16. http://www.linkedin.com/company/cinekid-festival
+>>
+>
