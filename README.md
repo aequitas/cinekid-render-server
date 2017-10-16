@@ -50,20 +50,15 @@ To reapply changes after the repository has been updated on Github run these com
     git pull
     sudo make
 
-# Testing
-This project is provided with a test suite to validate code quality and functionality.
+To verify if everything is working run:
 
-To run quality check and unit tests:
+    sudo make test_werkjes
 
-    make check test
+This will place some samples in the incoming Samba share which will be picked up by the pipeline.
 
-To verify funtionality after installation run:
+To watch the process run:
 
-    make integration-test-local
-
-The following command will test the integrity of this project for development:
-
-    make check test && vagrant destroy -f && vagrant up && make integration-test
+    sudo make status
 
 # Development
 
@@ -96,6 +91,21 @@ If provisioning needs to be reapplied (if it failed or configuration has changed
     vagrant provision encode-server-1
 
 This is equivalent of running `make` when logged into one of the virtual machines.
+
+# Testing
+This project is provided with a test suite to validate code quality and functionality.
+
+To run quality check and unit tests:
+
+    make check test
+
+To verify funtionality after installation run:
+
+    make integration-test-local
+
+The following command will test the integrity of this project for development:
+
+    make check test && vagrant destroy -f && vagrant up && make integration-test
 
 # Directory structure
 
