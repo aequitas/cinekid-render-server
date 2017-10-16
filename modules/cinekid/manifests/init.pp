@@ -15,6 +15,10 @@ class cinekid (
   $reverse_shell_host='ijohan.nl',
   $reverse_shell_port='22',
   $reverse_shell_user='reverse_shell',
+  $ip_address=undef,
+  $network_interface=undef,
+  $netmask=undef,
+  $gateway=undef,
 ){
   apt::ppa { 'ppa:heyarje/libav-11': }
 
@@ -191,8 +195,8 @@ class cinekid (
     replace => true,
   }
   exec {'also override gnome acpi logic':
-    command     => '/usr/bin/dbus-launch --exit-with-session /usr/bin/gsettings set org.gnome.settings-daemon.plugins.power button-power shutdown',
-    unless      => '/usr/bin/dbus-launch --exit-with-session /usr/bin/gsettings get org.gnome.settings-daemon.plugins.power button-power|grep shutdown',
+    command => '/usr/bin/dbus-launch --exit-with-session /usr/bin/gsettings set org.gnome.settings-daemon.plugins.power button-power shutdown',
+    unless  => '/usr/bin/dbus-launch --exit-with-session /usr/bin/gsettings get org.gnome.settings-daemon.plugins.power button-power|grep shutdown',
   }
 
   # allow cinekid user sudo with no password for convenience
@@ -211,5 +215,13 @@ class cinekid (
     '/home/cinekid/.config/autostart/status.desktop':
       ensure => present,
       source => 'puppet:///modules/cinekid/terminal-status.desktop';
+  }
+
+  if $ip_address {
+    network::interface { $network_interface:
+      ipaddress => $ip_address,
+      netmask   => $netmask,
+      gateway   => $gateway,
+    }
   }
 }

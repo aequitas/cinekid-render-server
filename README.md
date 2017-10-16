@@ -29,6 +29,8 @@ Get IP address of current computer:
 
     ip addr show dev eth0
 
+Or use static addresses if DHCP lease time is short.
+
 One computer is primary one others are secondary. The primary runs the Samba shares and performs Rsync to the webserver. Choose one computer as primary and use this computers IP in `settings.yaml` (below). The other render computers IP addresses should be configured as secondary in `settings.yaml`. A computer will determine if it is primary or secondary by checking its IP address in the settings and will provision accordingly. To Promote a secondary to a primare (eg: to replace a broker primary). Replace the IP address of primary in the settings and apply again (below).
 
 Edit the settings file (save changes with ctrl-o and exit with ctrl-x) and modify the IP addresses en `works` (werkjes) directories that need to be created. All options have defaults in `hiera/common.yaml` which are overwritten by `hiera/settings.yaml`.
