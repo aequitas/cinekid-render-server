@@ -21,7 +21,7 @@ all: apply
 
 update: pull apply
 
-pull: | git-remote-update
+pull:
 	git log HEAD..origin/master --oneline;
 	git pull
 
