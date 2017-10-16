@@ -1,6 +1,7 @@
 $primary_server = hiera('cinekid::nfs::primary_server')
 $primary = ( $ipaddress_eth0 == $primary_server or
-    $ipaddress_eth1 == $primary_server)
+    $ipaddress_eth1 == $primary_server or
+    hiera('cinekid::ip_address') == $primary_server )
 
 # webserver to test uploading
 node 'test-web-server' {
