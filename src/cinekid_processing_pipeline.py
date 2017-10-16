@@ -34,6 +34,7 @@ render_mapping = {
     # do nothing with apk files
     'apk': ('noop', None),
     'png': ('png', None),
+    'zip': ('noop', None),
     # 'default': ['webm', 'webm'],
     # 'default': ('test', None),
     # '': ('noop', None),

@@ -24,8 +24,8 @@ echo "starting video conversion"
   -ar 44100 \
   -ab 96k \
   -vcodec libx264 \
-  -b:v 1600k \
-  -bt 1600k \
+  -maxrate:v 15000k \
+  -bufsize:v 30000k \
   -threads 0 \
   "${tmp}"
 
