@@ -21,19 +21,9 @@ Install git and pull the repository locally:
     git clone https://github.com/aequitas/cinekid-render-server.git
     cd cinekid-render-server
 
-Copy example settings file to actual settings file name:
+Copy either `settings.yaml.primary` or `settings.yaml.secondary` to `settings.yaml` in the `hiera` folder depending on which server is being configured. For primary server also add works names and secret credentials for rsync upload.
 
-    cp hiera/settings.yaml.dist hiera/settings.yaml
-
-Get IP address of current computer:
-
-    ip addr show dev eth0
-
-Or use static addresses if DHCP lease time is short.
-
-One computer is primary one others are secondary. The primary runs the Samba shares and performs Rsync to the webserver. Choose one computer as primary and use this computers IP in `settings.yaml` (below). The other render computers IP addresses should be configured as secondary in `settings.yaml`. A computer will determine if it is primary or secondary by checking its IP address in the settings and will provision accordingly. To Promote a secondary to a primare (eg: to replace a broker primary). Replace the IP address of primary in the settings and apply again (below).
-
-Edit the settings file (save changes with ctrl-o and exit with ctrl-x) and modify the IP addresses en `works` (werkjes) directories that need to be created. All options have defaults in `hiera/common.yaml` which are overwritten by `hiera/settings.yaml`.
+Edit the settings file (save changes with ctrl-o and exit with ctrl-x) and modify the `works` (werkjes) directories that need to be created.
 
 Information such as `cinekid::web_user`, `cinekid::web_host` and `cinekid::public_key` which are required for uploading the results to the webserver should be known and need to be added as well. (It is possible to run `make` first and then login using SSH from a laptop to copy and paste this credentials and then run `make` again to reapply configuration).
 
@@ -77,6 +67,20 @@ To verify if everything is working run:
     make test_werkjes
 
 This will place some samples in the incoming Samba share which will be picked up by the pipeline.
+
+## Configuration
+
+Copy example settings file to actual settings file name:
+
+    cp hiera/settings.yaml.dist hiera/settings.yaml
+
+Get IP address of current computer:
+
+    ip addr show dev eth0
+
+Or use static addresses if DHCP lease time is short.
+
+One computer is primary one others are secondary. The primary runs the Samba shares and performs Rsync to the webserver. Choose one computer as primary and use this computers IP in `settings.yaml` (below). The other render computers IP addresses should be configured as secondary in `settings.yaml`. A computer will determine if it is primary or secondary by checking its IP address in the settings and will provision accordingly. To Promote a secondary to a primare (eg: to replace a broker primary). Replace the IP address of primary in the settings and apply again (below).
 
 # Development
 

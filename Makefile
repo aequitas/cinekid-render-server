@@ -127,6 +127,9 @@ fill_source:
 	sudo -u cinekid cp -v cinekid*sourcevideos/* /srv/cinekid/samba/test/20/
 
 test_werkjes:
+	# verify if files are downloaded form lfs
+	file cinekid2017sourcevideos/3534534.mp4 | grep 'ISO Media'
+	# copy files into incoming directory
 	cp cinekid2017sourcevideos/* /srv/cinekid/samba/test/20/
 
 .PHONY: fix check test integration-test

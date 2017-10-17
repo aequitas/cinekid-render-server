@@ -1,0 +1,18 @@
+# Sample settings for secondary render server
+#
+# Rename to:
+#
+# settings.yaml
+#
+# and run `make` to apply.
+#
+# All these settings have defaults in common.yaml which will be used if not provided here.
+
+# set fixed ip in the unfiltered network range (outside of dhcp pool)
+# other network settings are requested via dhcp
+cinekid::ip_address: 172.16.20.21
+
+# ip addresses for primary and secondary server(s)
+cinekid::nfs::primary_server: 172.16.20.20
+cinekid::nfs::secondary_servers:
+    - 172.16.20.21

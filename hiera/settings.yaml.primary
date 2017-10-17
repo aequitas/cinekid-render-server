@@ -1,0 +1,39 @@
+# Sample settings for primary render server
+#
+# Rename to:
+#
+# settings.yaml
+#
+# and run `make` to apply.
+#
+# All these settings have defaults in common.yaml which will be used if not provided here.
+
+# set fixed ip in the unfiltered network range (outside of dhcp pool)
+# other network settings are requested via dhcp
+cinekid::ip_address: 172.16.20.20
+
+# ip addresses for primary and secondary server(s)
+cinekid::nfs::primary_server: 172.16.20.20
+cinekid::nfs::secondary_servers:
+    - 172.16.20.21
+
+# works folders that need to be created on the Samba/Windows Share
+cinekid::works:
+  - Sjef de Superchef
+  - Plastic Monstertjes
+  - FilmSpel.nl
+  - VR Stereobril
+  - VR Metropolis
+  - VideoMapping
+  - Quirkbot - Touchboard
+  - EBOTRACK
+  - Test
+
+# user and ssh key for webserver sftp sync
+# these values are stored in GPG encrypted secrets.yaml and can also be required from website hosting.
+# cinekid::web_user: user
+# cinekid::web_host: host
+# cinekid::private_key: |
+#   -----BEGIN RSA PRIVATE KEY-----
+#   ...
+#   -----END RSA PRIVATE KEY-----
