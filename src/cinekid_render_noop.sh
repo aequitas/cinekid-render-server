@@ -20,4 +20,7 @@ ln -f "${in_file}" "${tmp}"
 
 if test -f "${tmpjpg}"; then
   ln -f "${injpg}" "${tmpjpg}"
+else
+  # spoof jpg creation for rest of pipeline
+  touch "${tmpjpg}"
 fi
