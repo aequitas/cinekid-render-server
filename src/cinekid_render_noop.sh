@@ -18,4 +18,6 @@ fi
 # do not render file, but hardlink to output directory
 ln -f "${in_file}" "${tmp}"
 
-ln -f "${injpg}" "${tmpjpg}"
+if test -f "${tmpjpg}"; then
+  ln -f "${injpg}" "${tmpjpg}"
+fi
