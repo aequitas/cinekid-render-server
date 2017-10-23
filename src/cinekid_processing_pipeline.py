@@ -22,7 +22,7 @@ log = logging.getLogger(__name__)
 
 # settings
 # video formats to look for when scanning directories
-extensions = "mp4|mov|flv|webm|avi|mpg|mpeg|m4v|apk|png"
+extensions = "mp4|mov|flv|webm|avi|mpg|mpeg|m4v|apk|png|zip"
 process_file_ext = re.compile('[^\.].*(%s)$' % extensions, re.I)
 # seconds a file not has to have been touched to be considered ready for rendering
 ready_age = 60
