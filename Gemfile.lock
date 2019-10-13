@@ -49,6 +49,3 @@ DEPENDENCIES
   json_pure (< 2)
   librarian-puppet (< 3)
   puppet (< 4.0.0)
-
-BUNDLED WITH
-   1.17.3

@@ -8,7 +8,7 @@ VIRTUALENV = $(WORKON_HOME)/cinekid
 
 gem=/usr/bin/gem
 git=/usr/bin/git
-bundle=$(BIN)/bundle
+bundle=/usr/bin/bundle
 librarian-puppet=$(BIN)/librarian-puppet
 puppet=$(BIN)/puppet
 pytest=$(VIRTUALENV)/bin/py.test
@@ -24,16 +24,17 @@ update: pull apply
 pull: | $(git)
 	git remote add source https://github.com/aequitas/cinekid-render-server || true
 	git remote update source
-	git log HEAD..source/master --oneline;
+	git log HEAD..source/master --oneline
 	git rebase source/master
+	git log -1 --oneline
 
 # install puppet modules
 Puppetfile.lock: Puppetfile | $(librarian-puppet) $(git)
-	$(librarian-puppet) lock
+	bundle exec $(librarian-puppet) lock
 
 vendor/modules/.installed: Puppetfile.lock
 	# update puppet module dependencies
-	$(librarian-puppet) install
+	bundle exec $(librarian-puppet) install
 	touch $@
 
 /var/run/.initial_apt:
@@ -73,12 +74,12 @@ Gemfile.lock: Gemfile | $(bundle)
 	$(bundle) lock
 
 # install bundler Gemfile parser
-$(bundle): $(gem)
-	$(gem) install --bindir $(BIN) bundler -v '1.17.3'
+$(bundle):
+	sudo apt-get install -yqq bundler
 
 # install ruby
-$(gem):
-	sudo apt-get install -yqq ruby ruby1.9.1-dev
+# ):
+# 	sudo apt-get install -yqq ruby ruby1.9.1-dev
 
 $(git): | /var/run/.initial_apt
 	sudo apt-get install -yqq git
