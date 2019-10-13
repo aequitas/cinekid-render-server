@@ -65,7 +65,7 @@ apply: vendor/modules/.installed /var/run/.initial_apt git-remote-update| $(pupp
 bootstrap: | $(puppet) $(librarian-puppet)
 
 # puppet gem binaries dependencies
-$(puppet) $(librarian-puppet):
+$(puppet) $(librarian-puppet): | $(bundle)
 	$(bundle) install --quiet --path $(GEM_HOME) --binstubs $(BIN)
 
 # install ruby packages from Gemfile
