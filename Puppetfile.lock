@@ -1,0 +1,33 @@
+FORGE
+  remote: https://forgeapi.puppetlabs.com
+  specs:
+    echocat-nfs (1.9.0)
+      puppetlabs-concat (< 3.0.0, >= 1.1.1)
+      puppetlabs-stdlib (< 5.0.0, >= 4.8.0)
+    example42-network (3.5.2)
+      puppetlabs-concat (< 7.0.0, >= 1.0.0)
+      puppetlabs-stdlib (< 7.0.0, >= 2.0.1)
+    puppetlabs-apt (2.4.0)
+      puppetlabs-stdlib (< 5.0.0, >= 4.13.0)
+    puppetlabs-concat (2.2.1)
+      puppetlabs-stdlib (< 5.0.0, >= 4.2.0)
+    puppetlabs-stdlib (4.20.0)
+    thias-samba (1.0.0)
+    wilrnh-ffmpeg (0.1.2)
+      puppetlabs-stdlib (>= 1.0.0)
+
+GIT
+  remote: https://github.com/bodepd/puppet-pip.git
+  ref: master
+  sha: d0cbdcf5310db1adcf8ff1aa0601805b6a432e94
+  specs:
+    bodepd-pip (0.0.1)
+
+DEPENDENCIES
+  bodepd-pip (>= 0)
+  echocat-nfs (>= 0)
+  example42-network (>= 0)
+  puppetlabs-apt (= 2.4.0)
+  thias-samba (>= 0)
+  wilrnh-ffmpeg (>= 0)
+

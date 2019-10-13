@@ -4,7 +4,6 @@
 .gem
 .bundle
 .rubydev
-*.lock
 vendor/modules
 test/.requirements.txt
 .cache/

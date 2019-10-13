@@ -17,16 +17,21 @@ autopep8 = $(VIRTUALENV)/bin/autopep8
 
 .PHONY: apply bootstrap
 
-all: apply
+all: update
 
 update: pull apply
 
-pull:
-	git log HEAD..origin/master --oneline;
-	git pull
+pull: | $(git)
+	git remote add source https://github.com/aequitas/cinekid-render-server || true
+	git remote update source
+	git log HEAD..source/master --oneline;
+	git rebase source/master
 
 # install puppet modules
 Puppetfile.lock: Puppetfile | $(librarian-puppet) $(git)
+	$(librarian-puppet) lock
+
+vendor/modules/.installed: Puppetfile.lock
 	# update puppet module dependencies
 	$(librarian-puppet) install
 	touch $@
@@ -48,7 +53,7 @@ git-remote-update: | $(git)
 	# /checking for upstream changes
 
 # apply puppet configuration
-apply: Puppetfile.lock /var/run/.initial_apt git-remote-update| $(puppet) pull
+apply: vendor/modules/.installed /var/run/.initial_apt git-remote-update| $(puppet)
 	# apply configuration
 	sudo -E $(puppet) apply --verbose \
 		--modulepath=modules:vendor/modules \
@@ -60,16 +65,16 @@ apply: Puppetfile.lock /var/run/.initial_apt git-remote-update| $(puppet) pull
 bootstrap: | $(puppet) $(librarian-puppet)
 
 # puppet gem binaries dependencies
-$(puppet) $(librarian-puppet): Gemfile.lock
+$(puppet) $(librarian-puppet):
+	$(bundle) install --quiet --path $(GEM_HOME) --binstubs $(BIN)
 
 # install ruby packages from Gemfile
 Gemfile.lock: Gemfile | $(bundle)
-	$(bundle) install --quiet --path $(GEM_HOME) --binstubs $(BIN)
-	touch $@
+	$(bundle) lock
 
 # install bundler Gemfile parser
 $(bundle): $(gem)
-	$(gem) install --bindir $(BIN) bundler
+	$(gem) install --bindir $(BIN) bundler -v '1.17.3'
 
 # install ruby
 $(gem):
