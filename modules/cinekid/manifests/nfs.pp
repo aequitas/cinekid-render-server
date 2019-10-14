@@ -8,7 +8,8 @@ class cinekid::nfs (
     # for primary server configure nfs exports, for others configure mounts
     if $::primary {
         include nfs::server
-        $clients = join(suffix($secondary_servers, '/32(rw,insecure,async,no_root_squash)'), ' ')
+        # just allow all servers in the subnet to access nfs
+        $clients = join(suffix($secondary_servers, '/24(rw,insecure,async,no_root_squash)'), ' ')
 
         nfs::server::export { $cinekid::base_dir:
             ensure  => 'present',
